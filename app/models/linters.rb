@@ -30,10 +30,11 @@ module Linters
       .map(&:linter_class)
   end
 
-  def self.all_violations(file)
+  def self.all_violations(pr, file)
     linter_classes = linters_for(file.extname)
     linter_classes.flat_map do |c|
-      c.new.run_and_filter(file)
+      linter = c.new(pr.get_config_file(c.config_filename))
+      linter.run_and_filter(file)
     end
   end
 
@@ -41,7 +42,7 @@ module Linters
     if file.patch.changed_lines.length > 1000 || file.blob.length > 100_000
       [Linters::FileTooLong.violation_for(pr, file)]
     else
-      all_violations(file).select do |v|
+      all_violations(pr, file).select do |v|
         file.patch.changed_lines.map(&:number).include?(v.line)
       end
     end
@@ -67,6 +68,11 @@ module Linters
 
   def self.pr_level_violations(pr)
     @_registered_pr_linters.flat_map { |linter| linter.run(pr) }
+  end
+
+  def self.linter_configs_for(extension)
+    linter_classes = linters_for(extension)
+    linter_classes.map(&:config_filename).select(&:itself)
   end
 
   @_registered_linters = []

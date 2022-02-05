@@ -4,6 +4,12 @@ require 'active_support/all'
 require 'filewatcher'
 require_relative '../../app/models/local_pr_alike'
 
+# ./linters require some extra deps
+require 'brakeman'
+require_relative '../../app/models/linters/base'
+require_relative '../../app/models/linters/js_linter'
+require_relative '../../app/models/linters'
+
 module Lintron
   # Handles setting up flags for CLI runs based on defaults, linty_rc, and
   # command line arguments
@@ -48,7 +54,9 @@ module Lintron
     end
 
     def pr
-      LocalPrAlike.from_branch(org_name, repo_name, base_branch)
+      pr = LocalPrAlike.from_branch(org_name, repo_name, base_branch)
+      pr.linter_configs = relevant_linter_configs(pr.files)
+      pr
     end
 
     def base_branch
@@ -120,6 +128,26 @@ module Lintron
         org: path_parts[-2],
         repo: path_parts[-1],
       }
+    end
+
+    # a hash of file_name => LinterConfigFile
+    # for all linter configs pertaining to this PRs list of changed source files (StubFiles)
+    def relevant_linter_configs(files)
+      extensions = files.map(&:extname).uniq
+      extensions.reduce({}) do |linter_configs, extension|
+        linter_configs.merge(linter_configs_for(extension))
+      end
+    end
+
+    def linter_configs_for(extension)
+      Linters.linter_configs_for(extension).reduce({}) do |linter_configs, config_filename|
+        full_path = File.join(repo_path, config_filename)
+        if File.exist?(full_path)
+          linter_configs.merge(config_filename => LinterConfigFile.from_path(full_path))
+        else
+          linter_configs
+        end
+      end
     end
   end
 end

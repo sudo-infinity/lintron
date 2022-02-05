@@ -1,12 +1,13 @@
 require 'git_diff_parser'
 require_relative './stub_file'
 require_relative './patch'
+require_relative './linter_config_file'
 
 # An object that is similar enough to PullRequest to be linted. It can be
 # constructed from the CLI tool (compares local working tree to base_branch) or
 # from the JSON payload that the CLI tool sends to the API
 class LocalPrAlike
-  attr_accessor :files, :repo, :org
+  attr_accessor :files, :repo, :org, :linter_configs
 
   def self.from_json(params)
     LocalPrAlike.new.tap do |pr|
@@ -14,6 +15,9 @@ class LocalPrAlike
       pr.repo = params[:repo]
       pr.files = params[:files].map do |file_json|
         StubFile.from_json(file_json)
+      end
+      pr.linter_configs = (params[:linter_configs] || {}).reduce({}) do |acc, (filename, content)|
+        acc.merge(filename => LinterConfigFile.from_content(content))
       end
     end
   end
@@ -23,6 +27,7 @@ class LocalPrAlike
       pr.org = org
       pr.repo = repo
       pr.files = pr.stubs_for_existing(base_branch) + pr.stubs_for_new
+      pr.linter_configs = {}
     end
   end
 
@@ -72,6 +77,16 @@ class LocalPrAlike
     path
   end
 
+  def get_config_file(filename)
+    linter_configs[filename]
+  end
+
+  def linter_configs_content
+    linter_configs.reduce({}) do |acc, (config_name, config_file)|
+      acc.merge(config_name => config_file.content)
+    end
+  end
+
   def files_as_json(_opts = {})
     @files.map(&:as_json)
   end
@@ -80,6 +95,7 @@ class LocalPrAlike
     {
       org: org,
       repo: repo,
+      linter_configs: linter_configs_content,
       files: files_as_json.select do |file_json|
         begin
           JSON.dump(file_json)
