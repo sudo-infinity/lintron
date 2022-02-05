@@ -1,6 +1,7 @@
 class Comment
   include ApiCache
   attr_accessor :position, :path, :message
+  SHA_PATTERN = %r{/[a-f0-9]{32,}/}
 
   def initialize(position:, path:, message:, id: nil)
     @position = position
@@ -20,15 +21,25 @@ class Comment
   end
 
   def ==(other)
-    position == other.position && path == other.path && message == other.message
+    position == other.position && path == other.path && same_message?(other)
   end
 
   def eql?(other)
     self == other
   end
 
+  def same_message?(other)
+    # Is exact same message, or only a sha changed (happens when we link to
+    # blobs in the lint message)
+    message_without_shas == other.message_without_shas
+  end
+
+  def message_without_shas
+    message.gsub(SHA_PATTERN, '')
+  end
+
   def hash
-    Digest::SHA1.hexdigest("#{ path }#{ position }#{ message }").hex
+    Digest::SHA1.hexdigest("#{ path }#{ position }#{ message_without_shas }").hex
   end
 
   def comment!(pr)
