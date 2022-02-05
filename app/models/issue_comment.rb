@@ -28,7 +28,7 @@ class IssueComment
       IssueComment.list_from_pr(@pr).find { |comment| comment.body == @body }
   end
 
-  def comment!(pr)
+  def comment!
     return existing_comment if existing_comment.present?
     Github.issues.comments.create @pr.org, @pr.repo, @pr.pr_number, body: @body
   end
