@@ -65,4 +65,8 @@ class IssueComment
   def delete!(pr)
     Github.issues.comments.delete @pr.org, @pr.repo, @gh.id
   end
+
+  def hash
+    Digest::SHA1.hexdigest("#{ @pr.org }:#{ @pr.repo }:#{ @pr.pr_number }:#{ @body }").hex
+  end
 end
