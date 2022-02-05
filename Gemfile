@@ -61,6 +61,8 @@ gem 'ruby-terminfo'
 gem 'filewatcher'
 
 gem 'chronic'
+gem 'business_time'
+gem 'holidays'
 
 group :staging, :production do
   gem 'rails_12factor'

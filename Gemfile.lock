@@ -44,6 +44,9 @@ GEM
       debug_inspector (>= 0.0.1)
     brakeman (3.6.2)
     builder (3.2.3)
+    business_time (0.7.5)
+      activesupport (>= 3.1.0)
+      tzinfo
     byebug (9.0.6)
     chronic (0.10.2)
     coffee-rails (4.1.1)
@@ -91,6 +94,7 @@ GEM
     globalid (0.4.0)
       activesupport (>= 4.2.0)
     hashie (3.5.5)
+    holidays (5.6.0)
     httparty (0.15.5)
       multi_xml (>= 0.5.2)
     i18n (0.8.4)
@@ -275,6 +279,7 @@ PLATFORMS
 
 DEPENDENCIES
   brakeman
+  business_time
   byebug
   chronic
   coffee-rails (~> 4.1.0)
@@ -286,6 +291,7 @@ DEPENDENCIES
   git_diff_parser
   github_api (~> 0.15.0)
   github_webhook (~> 1.0.3)
+  holidays
   httparty
   jbuilder (~> 2.0)
   jquery-rails
