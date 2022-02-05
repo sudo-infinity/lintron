@@ -17,7 +17,7 @@ module Linters
     def filter_messages(lints, file)
       filtered_lints = lints.reject do |lint|
         case lint.message
-        when /'(require|global|module)' is not defined\./
+        when /'(require|global|module|App|expect|Rev)' is not defined\./
           true
         when /Line must be at most/
           file.blob.lines[lint.line - 1].length < 81
