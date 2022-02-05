@@ -42,7 +42,7 @@ gem 'rubocop'
 gem 'brakeman'
 
 gem 'github_api'
-gem 'github_webhook'
+gem 'github_webhook', '~> 1.0.2'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'revelry_auth'
