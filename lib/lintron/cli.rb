@@ -113,13 +113,17 @@ module Lintron
     end
 
     def origin_info
-      origin = `git config --get remote.origin.url`
+      origin = git_origin
       return nil unless origin && origin.split('/').length > 1
-      path_parts = origin.split('/')
+      path_parts = origin.split(%r{/|:})
       {
         org: path_parts[-2],
-        repo: path_parts[-1],
+        repo: File.basename(path_parts[-1], '.*'),
       }
+    end
+
+    def git_origin
+      `git config --get remote.origin.url`.strip
     end
   end
 end

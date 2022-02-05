@@ -32,9 +32,9 @@ index dcf9ed7..8afc9c4 100644
     end
 
     it 'implements required methods' do
-      methods = %w[org repo files changed_files persisted? expected_url_from_path]
+      methods = %i[org repo files changed_files persisted? expected_url_from_path]
       methods.each do |method|
-        expect(LocalPrAlike.method_defined?(method.to_sym)).to be true
+        expect(LocalPrAlike.method_defined?(method)).to be true
       end
     end
   end
