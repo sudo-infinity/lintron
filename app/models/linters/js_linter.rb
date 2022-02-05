@@ -29,7 +29,17 @@ module Linters
     end
 
     def run(file)
-      lints = call_linter(linter_name, file.blob, linter_config)
+      begin
+        lints = call_linter(linter_name, file.blob, linter_config)
+      rescue ExecJS::ProgramError => e
+        lints = [
+          {
+            'line' => 1,
+            'message' => e.to_s,
+          },
+        ]
+      end
+
       lints.map do |lint|
         Violation.new file: file, line: lint['line'], message: lint['message']
       end

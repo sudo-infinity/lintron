@@ -9,10 +9,7 @@ class GithubWebhooksController < ApplicationController
       Thread.new do
         begin
           pr = PullRequest.from_payload(payload)
-          Status.process_with_status(pr) do
-            violations = Linters.violations_for_pr(pr)
-            Commenter.new(pr: pr, violations: violations).comment!
-          end
+          pr.lint_and_comment!
         rescue => e
           Rails.logger.error e
         end

@@ -42,4 +42,11 @@ class PullRequest
     # the structure which comes back from the API gem
     commits[commits.length - 1]
   end
+
+  def lint_and_comment!
+    Status.process_with_status(self) do
+      violations = Linters.violations_for_pr(self)
+      Commenter.new(pr: self, violations: violations).comment!
+    end
+  end
 end

@@ -32,7 +32,9 @@ module Linters
 
   def self.all_violations(file)
     linter_classes = linters_for(file.extname)
-    linter_classes.flat_map { |c| c.new.run_and_filter(file) }
+    linter_classes.flat_map do |c|
+      c.new.run_and_filter(file)
+    end
   end
 
   def self.violations_for_changes(file)
