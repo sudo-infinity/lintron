@@ -60,6 +60,8 @@ gem 'colorize'
 gem 'ruby-terminfo'
 gem 'filewatcher'
 
+gem 'chronic'
+
 group :staging, :production do
   gem 'rails_12factor'
 end
