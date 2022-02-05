@@ -1,5 +1,4 @@
 //header themes
-@import 'globals';
 .header{
   .powered-by-revelry{
       position: absolute;
@@ -49,9 +48,13 @@
 .hero-splash{
   width: 100%;
   height: 100%;
-  background: url('/images/lintron-hero-bg.png') $background_color;
+  background: url('/images/lintron-hero-bg.png') $body-bkgd;
   background-size: cover;
   background-position: center;
+}
+
+.logo {
+  max-width: 240px;
 }
 
 //hooks themes
@@ -81,7 +84,7 @@
 }
 //style encapsulation workaround
 
-.lintron-styles{
+.lintron-styles {
   img{
     max-width: inherit;
   }
@@ -133,42 +136,12 @@
     color:$white;
   }
   .color-accent-text{
-    color:$primary_color_accent;
+    color:$secondary-color;
   }
   .color-text{
-    color:$primary_color;
+    color:$primary-color;
   }
-  //form styles
-  .hooks-form{
-    border: solid 2px #cccccc;
-    width: 95%;
-    height: 60px;
-    margin: 0px;
-    padding: 10px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  .hooks-form:hover{
-    border: solid 2px $primary_color_accent_shadow;
-  }
-  .hooks-form:focus{
-    border: solid 2px $primary_color_accent;
-    color:$primary_color_accent;
-  }
-  .hooks-button{
-    background: $primary_color_accent;
-    width: 95%;
-    height: 60px;
-    color:$white;
-    margin: 0px;
-    font-style: italic;
-    font-weight: 900;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  .hooks-button:hover{
-    background: $primary_color_accent_shadow;
+  .background{
+    background: $body-bkgd;
   }
 }

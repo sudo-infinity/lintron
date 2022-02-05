@@ -1,0 +1,27 @@
+$topbar-height: 60px;
+$topbar-bkgd: $darker-gray;
+$topbar-color: $lightest-gray;
+$topbar-link-color: $anchor-color;
+$topbar-link-color-hover: $anchor-color-hover;
+
+
+.rev-TopBar {
+  background: $topbar-bkgd;
+  color: $topbar-color;
+  position: relative;
+  padding: 0 $global-padding;
+  z-index: $above;
+}
+.rev-TopBar-left,
+.rev-TopBar-right,
+.top-bar-left,
+.top-bar-right {
+  float: left;
+  ul {
+    background: transparent;
+  }
+}
+.rev-TopBar-right,
+.top-bar-right {
+  float: right;
+}

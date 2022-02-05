@@ -1,0 +1,16 @@
+<div class="rev-Rail">
+    <nav class="rev-NavigationOutline">
+      <h2></h2>
+      <ul class="rev-Menu">
+        <li><%= link_to 'Manage Repos', hooks_url %></li>
+        <li>
+          <%= link_to 'Pull Requests', pull_requests_url %>
+          <ul class="rev-Menu rev-Menu--nested">
+            <% @repos.each do |repo| %>
+              <li><%= link_to repo.slug, pull_requests_url(repo: repo.slug) %></li>
+            <% end %>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+</div>

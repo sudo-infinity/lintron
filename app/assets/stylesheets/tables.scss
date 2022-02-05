@@ -1,11 +1,25 @@
+@import 'revelry_components/vars/colors';
+@import './settings';
+
 table {
-  color: $sub_white;
+  border-spacing: 0;
+  color: $lightest-gray;
+  font-size: $global-font-size-small;
+  line-height: $global-vertical-space;
+  text-align: left;
+  width: 100%;
+}
+td, th {
+  padding: $global-vertical-space / 2 $global-horizontal-space / 2;
 }
 
+thead tr {
+  @include inverted-body-color-stack;
+  border-spacing: 1px;
+}
 .TableRow.TableRow {
-  background: $background_color;
+  @include color-stack($lighter-gray);
 }
-
 .TableRow.TableRow:nth-child(2n+1) {
-  background: $background_paper;
+  @include body-color-stack;
 }

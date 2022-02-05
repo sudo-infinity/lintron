@@ -1,0 +1,103 @@
+$input-height: 44px;
+$input-bkgd: transparent;
+$input-bkgd-focus: $input-bkgd;
+$input-border-width: 1px;
+$input-border-style: solid;
+$input-border-color: $divider-color;
+$input-border: $input-border-width $input-border-style $input-border-color;
+$input-border-focus: 1px solid darken($divider-color, 5%);
+$input-box-shadow: none;
+$input-box-shadow-focus: $input-box-shadow;
+$input-radius: 0;
+$input-color: $body-font-color;
+$input-color-focus: $input-color;
+$input-font-size: $global-font-size;
+$label-color: $gray;
+$label-font-size: $global-font-size;
+$error-color: $warning;
+$input-margin-bottom: $global-vertical-space;
+
+@mixin input-style {
+  @include global-transition;
+  @include placeholder;
+  background: $input-bkgd;
+  border: $input-border;
+  border-radius: $input-radius;
+  box-shadow: $input-box-shadow;
+  color: $input-color;
+  display: block;
+  font-size: $input-font-size;
+  margin: 0 0 $input-margin-bottom;
+  max-width: 100%;
+  padding: 0;
+  &:active,
+  &:focus {
+    background: $input-bkgd-focus;
+    border: $input-border-focus;
+    box-shadow: $input-box-shadow-focus;
+    color: $input-color-focus;
+  }
+  &--expanded {
+    width: 100%;
+  }
+}
+
+.rev-InputLabel {
+  display: block;
+  font-size: $label-font-size;
+  margin: 0 0 $input-margin-bottom;
+  .rev-Button,
+  .rev-Input,
+  .rev-FileInput-fileLabel,
+  .rev-InputGroup .rev-InputGroup-label {
+    margin-bottom: 0;
+  }
+}
+.rev-LabelText,
+.rev-Checkbox-label,
+.rev-Radio-label {
+  @include global-transition;
+  color: $label-color;
+  font-size: $label-font-size;
+}
+.rev-Input {
+  @include input-style;
+  height: $input-height;
+  padding: 0 calc(#{$global-horizontal-space} - #{$input-border-width});
+}
+.rev-Select {
+  @include input-style;
+  height: $input-height;
+  padding: 0 calc(#{$global-horizontal-space} - #{$input-border-width});
+  -webkit-border-radius: 0;
+  .rev-InputGroup &,
+  &--unrounded {
+    border: 0;
+    height: calc(#{$input-height} - #{$input-border-width * 2});
+    margin-left: 1px;
+    margin-right: 1px;
+    outline: $input-border;
+    position: relative;
+    top: $input-border-width;
+    &:focus {
+      border: 0;
+      border-radius: 0;
+      outline: $input-border-focus;
+      outline-offset: 0;
+    }
+  }
+}
+.rev-Textarea {
+  @include input-style;
+  height: auto;
+  min-height: $input-height;
+  padding: $global-padding-small;
+}
+.rev-InputHelpText,
+.form-error {
+  display: block;
+  font-size: $global-font-size-small;
+  font-style: normal;
+  line-height: 1.85;
+  margin: 0;
+}

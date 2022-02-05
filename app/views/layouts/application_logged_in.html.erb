@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lintron</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <meta http-equiv='X-UA-Compatible', content='IE=edge,chrome=1'>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <% unless user_signed_in? %>
+    <link rel="stylesheet" id="main-stylesheet-css" href="http://3ulsmb4eg8vz37c0vz2si64j.wpengine.netdna-cdn.com/wp-content/themes/revelry/assets/stylesheets/foundation.css" type="text/css" media="all">
+  <% end %>
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,800,800i" rel="stylesheet">
+</head>
+  <body class="background">
+    <div class="lintron-styles">
+      <% if user_signed_in? %>
+        <%= render partial:('./layouts/header_nav_logged_in.html') %>
+      <% else %>
+        <%= render partial:('./layouts/header_nav_logged_out.html') %>
+      <% end %>
+    </div>
+    <div class="<%= user_signed_in? ? '' : 'lintron-styles' %>">
+      <div class="header-spacing">
+      </div>
+      <div class="rev-Split">
+        <%= render partial: 'layouts/sidebar' %>
+        <div class="rev-MainPanel">
+          <main class="rev-MainPanel-content">
+            <%= render partial: 'layouts/flashes' %>
+            <%= yield %>
+          </main>
+        </div>
+      </div>
+      <% if user_signed_in? %>
+        <%= render partial:('./layouts/footer_nav_logged_in.html') %>
+      <% else %>
+        <%= render partial:('./layouts/footer_nav_logged_out.html') %>
+      <% end %>
+    </div>
+  </body>
+</html>

@@ -1,6 +1,10 @@
 class PullRequest < ActiveRecord::Base
   scope :after, ->(date) { where("(github_cache->>'created_at')::timestamp >= ?", date) }
   scope :before, ->(date) { where("(github_cache->>'created_at')::timestamp < ?", date) }
+  scope :for_repo, (lambda do |repo_slug|
+    org_name, repo_name = repo_slug.split('/')
+    self.for(org_name, repo_name)
+  end)
   scope :for, ->(org, repo) { where(org: org, repo: repo) }
   scope :merged, -> { where("(github_cache->>'merged')::boolean") }
   scope :unmerged, -> { where("not (github_cache->>'merged')::boolean") }
