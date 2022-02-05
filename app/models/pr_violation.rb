@@ -6,7 +6,7 @@ class PrViolation < Violation
     @message = message
   end
 
-  def to_comment
+  def to_comment(pr)
     IssueComment.new(
       pr: pr,
       body: message,

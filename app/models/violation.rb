@@ -11,8 +11,9 @@ class Violation
     file.patch.position_for_line_number(line)
   end
 
-  def to_comment
+  def to_comment(pr)
     Comment.new(
+      pr: pr,
       position: position,
       path: file.path,
       message: message

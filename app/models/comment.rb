@@ -1,9 +1,10 @@
 class Comment
   include ApiCache
-  attr_accessor :position, :path, :message
+  attr_accessor :pr, :position, :path, :message
   SHA_PATTERN = %r{/[a-f0-9]{32,}/}
 
-  def initialize(position:, path:, message:, id: nil)
+  def initialize(pr:, position:, path:, message:, id: nil)
+    @pr = pr
     @position = position
     @path = path
     @message = message
@@ -11,7 +12,7 @@ class Comment
   end
 
   def self.from_gh(gh, pr)
-    new(position: gh.position, path: gh.path, message: gh.body, id: gh.id)
+    new(pr: pr, position: gh.position, path: gh.path, message: gh.body, id: gh.id)
   end
 
   def ==(other)
@@ -36,7 +37,7 @@ class Comment
     Digest::SHA1.hexdigest("#{ path }#{ position }#{ message_without_shas }").hex
   end
 
-  def comment!(pr)
+  def comment!
     cmt = cache_api_request :to_gh do
       begin
         Github.pull_requests.comments.create \
