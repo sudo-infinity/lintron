@@ -8,6 +8,10 @@ class MockPR
     'exemplar'
   end
 
+  def persisted?
+    false
+  end
+
   def expected_url_from_path(path)
     path
   end

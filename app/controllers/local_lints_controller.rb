@@ -4,7 +4,7 @@ class LocalLintsController < ApplicationController
   skip_before_action :verify_authenticity_token, if: :json_request?
 
   def create
-    pr = LocalPrAlike.from_json(params[:files])
+    pr = LocalPrAlike.from_json(params)
     violations = Linters.violations_for_pr(pr)
 
     render json: violations

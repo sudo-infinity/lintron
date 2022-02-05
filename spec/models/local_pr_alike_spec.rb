@@ -30,5 +30,12 @@ index dcf9ed7..8afc9c4 100644
     it 'makes stub files from diff' do
       expect(pr.stubs_for_existing('origin/master').length).to eq 1
     end
+
+    it 'implements required methods' do
+      methods = %i[org repo files changed_files persisted? expected_url_from_path]
+      methods.each do |method|
+        expect(LocalPrAlike.method_defined?(method)).to be true
+      end
+    end
   end
 end
