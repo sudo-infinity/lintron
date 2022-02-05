@@ -35,9 +35,10 @@ class Violation
 
   def as_json(_opts = {})
     {
-      path: file.path,
+      path: file.try(:path),
       line: line,
       message: message,
+      linter: linter.to_s,
     }
   end
 end
