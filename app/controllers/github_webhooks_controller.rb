@@ -4,7 +4,7 @@ class GithubWebhooksController < ApplicationController
 
   LINT_ACTIONS = %w(opened synchronize)
 
-  def pull_request(payload)
+  def github_pull_request(payload)
     if LINT_ACTIONS.include? payload['action']
       Thread.new do
         begin
