@@ -1,0 +1,68 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'pp'
+require 'httparty'
+require 'colorize'
+require 'terminfo'
+require_relative './app/models/local_pr_alike'
+
+pr = LocalPRAlike.from_branch('origin/master')
+
+response = HTTParty.post('http://localhost:3000/local_lints', body: {files: pr.as_json}.to_json, headers: { 'Content-Type' => 'application/json', 'Accept' => 'application/json' })
+
+def wrap_pretty(string, indent_level)
+  width = TermInfo.screen_size[1] # Get the width of the term
+  buffer = ""
+  words = string.split(/\s/)
+
+  current_word = 0
+  line_length = 0
+  while current_word < words.length
+    line_length += words[current_word].length
+    if line_length > width - 5 - indent_level
+      buffer += "\n"
+      buffer += ' ' * indent_level
+      line_length = indent_level
+    else
+      buffer += words[current_word]
+      buffer += " "
+      current_word += 1
+    end
+  end
+  buffer
+end
+
+class ViolationLine < OpenStruct
+  def file_and_line
+    "#{path}:#{line} "
+  end
+end
+
+begin
+  violations = JSON.parse(response.body).map { |json| ViolationLine.new(json) }
+  violations.sort_by { |v| v.file_and_line }
+
+  max_file_and_line_length = violations.map { |v| v.file_and_line.length }.max
+
+  last_file = violations.first.path
+
+  colors = [:black, :light_black].cycle.each
+
+  violations.each do |violation|
+    if last_file != violation.path
+      colors.rewind
+      puts '-' * TermInfo.screen_size[1] + "\n\n\n"
+    end
+
+    file_and_line = violation.file_and_line
+    file_and_line += ' ' * (max_file_and_line_length - file_and_line.length)
+    puts wrap_pretty("#{file_and_line}#{violation['message']}".colorize(colors.next), file_and_line.length)
+
+    last_file = violation.path
+  end
+  puts "\n\n"
+rescue JSON::ParserError => e
+  puts "An error occurred while parsing response from Lintron".colorize(:red)
+  puts "Raw response body: "
+  puts response.body
+end

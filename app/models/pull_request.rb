@@ -74,4 +74,8 @@ class PullRequest
       Commenter.new(pr: self, violations: violations).comment!
     end
   end
+
+  def expected_url_from_path(path)
+    "https://github.com/#{@org}/#{@repo}/blob/#{latest_commit.sha}/#{path}"
+  end
 end

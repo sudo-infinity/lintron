@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.8'
+ruby '2.3.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
@@ -52,6 +52,11 @@ gem 'therubyracer'
 gem 'lograge'
 
 gem 'puma'
+
+gem 'git_diff_parser'
+gem 'httparty'
+gem 'colorize'
+gem 'ruby-terminfo'
 
 group :staging, :production do
   gem 'rails_12factor'
