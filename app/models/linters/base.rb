@@ -19,3 +19,6 @@ module Linters
     end
   end
 end
+
+require_relative './js_linter'
+require_relative '../linters'
