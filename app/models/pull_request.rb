@@ -31,11 +31,22 @@ class PullRequest
 
   def files
     cache_api_request :files do
-      files_tmp ||= Github.pull_requests.files org, repo, pr_number
+      page = 1
+      files_tmp = []
+      loop do
+        files = fetch_file_page(page)
+        files_tmp.concat(files)
+        break if files.length == 0
+        page += 1
+      end
       files_tmp.map do |f|
         GithubFile.from_pr_and_file(self, f)
       end
     end
+  end
+
+  def fetch_file_page(page)
+    Github.pull_requests.files org, repo, pr_number, page: page
   end
 
   def commits
