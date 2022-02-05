@@ -1,7 +1,9 @@
 module Linters
+  # A linter that detects whether specs are updated when the corresponding
+  # application code changes
   class SpecsRequired < Linters::Base
     def config
-      HashWithIndifferentAccess.new({
+      HashWithIndifferentAccess.new(
         rb: {
           spec_file_ext: 'rb',
           app_path_pattern: %r{[^/]+/(?<path>[^\Z]+)\Z},
@@ -10,11 +12,11 @@ module Linters
           spec_file_ext: 'js',
           app_path_pattern: %r{app/assets/(?<path>[^\Z]+)\Z},
         },
-      })
+      )
     end
 
     def config_for_extname(extname)
-      config.find do |pattern, config|
+      config.find do |pattern, _config|
         pattern = Regexp.new("\\A#{pattern}\\Z") unless pattern.class < Regexp
         pattern.match(extname)
       end[1]
@@ -29,16 +31,16 @@ module Linters
     def files_needing_specs(pr)
       pr.files
         .select { |f| requires_spec?(f.extname) }
-        .reject { |f| is_spec?(f.path) }
+        .reject { |f| spec?(f.path) }
     end
 
-    def is_spec?(filename)
+    def spec?(filename)
       /\A(spec|test)/.match(filename)
     end
 
-    def is_spec_for?(base, candidate)
-      return false unless is_spec?(candidate.path)
-       "#{base.basename('.*')}_spec" == candidate.basename('.*')
+    def spec_for?(base, candidate)
+      return false unless spec?(candidate.path)
+      "#{base.basename('.*')}_spec" == candidate.basename('.*')
     end
 
     def requires_spec?(extname)
@@ -46,17 +48,17 @@ module Linters
     end
 
     def check_for_matching_spec(pr, file)
-      unless pr.files.any? { |candidate| is_spec_for?(file, candidate) }
-        spec_missing_violation_for(pr, file)
-      end
+      return if pr.files.any? { |candidate| spec_for?(file, candidate) }
+      spec_missing_violation_for(pr, file)
     end
 
     def spec_missing_violation_for(pr, file)
       Violation.new(
         file: file,
-        line: 1 ,
+        line: 1,
         message: <<-message.strip_heredoc
-          Expected changes or additions to a test file called [#{expected_spec_filename(file)}](#{expected_spec_url(pr, file)})
+          Expected changes or additions to a test file called
+          [#{expected_spec_filename(file)}](#{expected_spec_url(pr, file)})
         message
       )
     end
@@ -64,7 +66,7 @@ module Linters
     def expected_spec_filename(file)
       filename_base = file.basename '.*'
       extname = file.extname
-      if %{es6 jsx js}.include?(extname)
+      if %w(es6 jsx js).include?(extname)
         file_extname = 'js'
       else
         file_extname = 'rb'

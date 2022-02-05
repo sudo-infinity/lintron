@@ -1,3 +1,5 @@
+# A file from the Github API. Useful for retrieving file contents and path in
+# an easy way
 class GithubFile < FileLike
   include ApiCache
   attr_accessor :org, :repo, :to_gh
