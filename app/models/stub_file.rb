@@ -30,7 +30,7 @@ class StubFile < FileLike
     @patch || Patch.new(patch_from_blob)
   end
 
-  def as_json(opts = {})
+  def as_json(_opts = {})
     {
       path: @path,
       blob: @blob,

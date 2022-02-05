@@ -2,6 +2,9 @@ require 'git_diff_parser'
 require_relative './stub_file'
 require_relative './patch'
 
+# An object that is similar enough to PullRequest to be linted. It can be
+# constructed from the CLI tool (compares local working tree to base_branch) or
+# from the JSON payload that the CLI tool sends to the API
 class LocalPRAlike
   attr_accessor :files
 
@@ -51,7 +54,7 @@ class LocalPRAlike
     path
   end
 
-  def as_json(opts = {})
+  def as_json(_opts = {})
     @files.map(&:as_json)
   end
 end

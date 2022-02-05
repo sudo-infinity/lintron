@@ -33,7 +33,7 @@ class Violation
     "#<Violation:#{ (object_id * 2).to_s(16) } @line=#{ line } @file=GithubFile(#{ file.path }) @message='#{ message }'>"
   end
 
-  def as_json(opts = {})
+  def as_json(_opts = {})
     {
       path: file.path,
       line: line,
