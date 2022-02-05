@@ -38,7 +38,7 @@ module Linters
   end
 
   def self.violations_for_changes(pr, file)
-    if file.patch.changed_lines.length > 1000
+    if file.patch.changed_lines.length > 1000 || file.blob.length > 100_000
       [Linters::FileTooLong.violation_for(pr, file)]
     else
       all_violations(file).select do |v|
