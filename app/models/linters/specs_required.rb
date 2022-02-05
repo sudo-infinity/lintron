@@ -55,7 +55,7 @@ module Linters
     def self.spec_missing_violation_for(pr, file)
       Violation.new(
         file: file,
-        line: 1,
+        line: file.first_line_of_patch,
         message: <<-message.strip_heredoc
           Expected changes or additions to a test file called
           [#{expected_spec_filename(file)}](#{expected_spec_url(pr, file)})

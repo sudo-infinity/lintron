@@ -8,4 +8,8 @@ class FileLike
   def basename(ext = nil)
     File.basename path, ext
   end
+
+  def first_line_of_patch
+    patch.changed_lines.first.number
+  end
 end
