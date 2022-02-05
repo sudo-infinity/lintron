@@ -1,4 +1,21 @@
 Rails.application.configure do
+  config.lograge.enabled = true
+  config.lograge.custom_options = lambda do |event|
+    params = event.payload[:params]
+
+    {
+      'pull_request' => 'url',
+      'repository' => 'url',
+      'sender' => 'login',
+      'github_webhook' => 'action'
+    }.map do |key, replacement|
+      if params.has_key?(key)
+        params[key] = params[key][replacement]
+      end
+    end
+
+    { "params" => params }
+  end
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
