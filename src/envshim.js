@@ -1,9 +1,9 @@
-if (typeof window == 'undefined') {
+if (typeof window === 'undefined') {
   global = this;
-  console = {};
-  ['error', 'log', 'info', 'warn'].forEach(function (fn) {
+  console = {}; // jshint ignore:line
+  ['error', 'log', 'info', 'warn'].forEach(function(fn) {
     if (!(fn in console)) {
-      console[fn] = function () {};
+      console[fn] = function() {};
     }
   });
 } else {
