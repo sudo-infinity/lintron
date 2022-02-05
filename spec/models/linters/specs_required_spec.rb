@@ -55,4 +55,25 @@ describe Linters::SpecsRequired do
     expect(linter.exempt_path?(pr_with_exemption.files.first)).to be true
     expect(linter.requires_spec?(pr_with_exemption.files.first)).to be false
   end
+
+  it 'can get the url where a spec should live' do
+    path = 'test.rb'
+    body = 'class Test; end'
+
+    file = StubFile.new(
+      path: path,
+      blob: body,
+      patch: Patch.from_file_body(body),
+    )
+
+    pr = LocalPRAlike.from_json(
+      [
+        file.as_json,
+      ],
+    )
+
+    expect(
+      Linters::SpecsRequired.expected_spec_url(pr, file),
+    ).to eq 'spec/test_spec.rb'
+  end
 end

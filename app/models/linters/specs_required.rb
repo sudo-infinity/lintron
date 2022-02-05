@@ -95,8 +95,9 @@ module Linters
     def self.expected_spec_path(file)
       path_pattern = config_for_extname(file.extname)[:app_path_pattern]
 
-      path_match = File.dirname(path_pattern.match(file.path)[:path])
-      "spec/#{path_match}/#{expected_spec_filename(file)}"
+      path_match = File.dirname(path_pattern.match(file.path)[:path]) + '/'
+      path_match = path_match == './' ? '' : path_match
+      "spec/#{path_match}#{expected_spec_filename(file)}"
     end
 
     def self.expected_spec_url(pr, file)
