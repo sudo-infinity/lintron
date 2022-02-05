@@ -23,7 +23,7 @@ module Linters
 
     def cmd(file)
       <<-CMD.squish
-        epylint #{file.path}
+        pylint #{file.path} --msg-template='{path}:{line}: {category} ({msg_id} {symbol}, {obj}) {msg}'
       CMD
     end
 
