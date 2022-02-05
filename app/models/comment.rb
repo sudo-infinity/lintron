@@ -50,7 +50,7 @@ class Comment
         rescue Github::Error::UnprocessableEntity => e
           # Try to post a PR comment instead, because this mostly happens if the
           # patch has no lines in github (which means no line comments can post)
-          IssueComment.from_line_comment(pr, self).comment!(pr)
+          IssueComment.from_line_comment(pr, self).comment!
         end
     end
 
