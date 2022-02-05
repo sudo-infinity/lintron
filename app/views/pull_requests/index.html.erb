@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <tr>
+      <th>
+        PR
+      </th>
+      <th>
+        Tests?
+      </th>
+    </tr>
+  </thead>
+  <% @prs.each do|pr| %>
+    <tr>
+      <td>
+        <%= link_to pr.github_cache.html_url, pr.github_cache.html_url, target: '_blank' %>
+      </td>
+      <td>
+        <%= pr.tests? ? 1 : 0 %>
+      </td>
+    </tr>
+  <% end %>
+</table>

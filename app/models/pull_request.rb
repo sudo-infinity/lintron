@@ -1,7 +1,15 @@
 class PullRequest < ActiveRecord::Base
+  scope :after, ->(date) { where("(github_cache->>'created_at')::timestamp >= ?", date) }
+  scope :before, ->(date) { where("(github_cache->>'created_at')::timestamp < ?", date) }
+  scope :for, ->(org, repo) { where(org: org, repo: repo) }
+
   include ApiCache
 
   PR_URL_PATTERN = %r{http(s)?://github.com/(?<org>[^/]+)/(?<repo>[^/]+)/pull/(?<pr_number>[0-9]+)}
+
+  before_save do
+    self.github_cache = to_gh.to_h
+  end
 
   def initialize(org:, repo:, pr_number:)
     super(
@@ -9,6 +17,10 @@ class PullRequest < ActiveRecord::Base
       repo: repo,
       pr_number: pr_number,
     )
+  end
+
+  def github_cache
+    Hashie::Mash.new attributes['github_cache']
   end
 
   def self.from_url(url)
@@ -84,5 +96,9 @@ class PullRequest < ActiveRecord::Base
 
   def key
     "#{@org}/#{@repo}/#{@pr_number}"
+  end
+
+  def tests?
+    lints.none? { |lint| lint['linter'] == 'Linters::SpecsRequired' }
   end
 end

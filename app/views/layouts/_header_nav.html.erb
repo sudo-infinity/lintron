@@ -13,7 +13,7 @@
         <a class='right-text ' href="<%= user_omniauth_authorize_path(:github) %>">
           <i class='github-icon'><img src="images/lintron_icon_grid.svg" alt="" /></i>
         </a>
-        <a class='right-text github-signin big' href="<%= user_omniauth_authorize_path(:github) %>">Sign in with Github</a>
+        <a class='right-text github-signin big' href="<%= user_omniauth_authorize_path(:github, origin: 'http://localhost:3000/auth/github/callback') %>">Sign in with Github</a>
         <!--<%= link_to "Sign in with Github", user_omniauth_authorize_path(:github) %>-->
       <% end %>
     </li>

@@ -8,5 +8,7 @@ Rails.application.routes.draw do
   devise_scope :user do
     root to: 'hooks#index'
     resources :hooks
+
+    resources :pull_requests
   end
 end
