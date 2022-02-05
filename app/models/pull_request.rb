@@ -2,10 +2,17 @@ class PullRequest
   include ApiCache
   attr_accessor :org, :repo, :pr_number
 
+  PR_URL_PATTERN = %r{http(s)?://github.com/(?<org>[^/]+)/(?<repo>[^/]+)/pull/(?<pr_number>[0-9]+)}
+
   def initialize(org:, repo:, pr_number:)
     @org = org
     @repo = repo
     @pr_number = pr_number
+  end
+
+  def self.from_url(url)
+    match_data = PR_URL_PATTERN.match(url)
+    self.new(org: match_data[:org], repo: match_data[:repo], pr_number: match_data[:pr_number].to_i)
   end
 
   def self.from_payload(payload)
