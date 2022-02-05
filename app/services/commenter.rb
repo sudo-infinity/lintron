@@ -36,8 +36,9 @@ class Commenter
   end
 
   def list_from_pr(page = 1)
-    results = fetch_comment_page(page)
-    results.concat list_from_pr(page + 1) if results.links.next
+    gh_results = fetch_comment_page(page)
+    results = gh_results.to_a
+    results.concat list_from_pr(page + 1) if gh_results.links.next
     results
   end
 
