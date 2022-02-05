@@ -28,3 +28,4 @@ class Linters::RuboCop < Linters::Base
 end
 
 Linters.register(:rb, Linters::RuboCop)
+Linters.register(:rake, Linters::RuboCop)
