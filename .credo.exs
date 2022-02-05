@@ -81,6 +81,7 @@
         {Credo.Check.Readability.ModuleAttributeNames},
         {Credo.Check.Readability.ModuleDoc, ignore_names: [
           ~r/(\.\w+Controller|\.Endpoint|\.Repo|\.Router|\.\w+Socket|\.\w+View)$/, # Default ignore regex
+          ~r/(\.Repo\.Migrations\.)/, # Ignore ecto migrations
           ~r/\.Test$/ # Ignore Test modules
         ]},
         {Credo.Check.Readability.ModuleNames},
