@@ -1,3 +1,5 @@
+require 'linters/file_too_long'
+
 module Linters
   class LinterConfig
     attr_accessor :pattern, :linter_class
@@ -38,7 +40,13 @@ module Linters
   end
 
   def self.violations_for_changes(file)
-    all_violations(file).select { |v| file.patch.changed_lines.map(&:number).include?(v.line) }
+    if file.patch.changed_lines.length > 1000
+      [Linters::FileTooLong.violation_for(file)]
+    else
+      all_violations(file).select do |v|
+        file.patch.changed_lines.map(&:number).include?(v.line)
+      end
+    end
   end
 
   def self.violations_for_pr(pr)
