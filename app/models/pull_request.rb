@@ -96,8 +96,30 @@ class PullRequest < ActiveRecord::Base
     end
   end
 
+  def get_config_file(filename)
+    config_files[filename]
+  end
+
+  # a hash of filename => LinterConfigFile, where file contents are fetched lazily
+  def config_files
+    @config_file_cache ||= Hash.new do |cache, filename|
+      cache[filename] = fetch_config_file(filename)
+    end
+  end
+
+  def fetch_config_file(filename)
+    url = raw_url_from_path(filename)
+    response = HTTParty.get(url)
+    return nil unless response.success?
+    LinterConfigFile.from_content(response.body)
+  end
+
   def expected_url_from_path(path)
     "https://github.com/#{@org}/#{@repo}/blob/#{latest_commit.sha}/#{path}"
+  end
+
+  def raw_url_from_path(path)
+    "https://raw.githubusercontent.com/#{@org}/#{@repo}/#{latest_commit.sha}/#{path}"
   end
 
   def key
