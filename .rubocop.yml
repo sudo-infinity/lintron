@@ -1,5 +1,8 @@
-AllCops:
-  RunRailsCops: true
+Rails:
+  Enabled: true
 
-TrailingComma:
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: comma

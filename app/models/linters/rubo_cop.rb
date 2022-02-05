@@ -17,7 +17,7 @@ class Linters::RuboCop < Linters::Base
   end
 
   def processed_source_for(file)
-    RuboCop::ProcessedSource.new(file.blob, file.path)
+    RuboCop::ProcessedSource.new(file.blob, 2.3, file.path)
   end
 end
 
