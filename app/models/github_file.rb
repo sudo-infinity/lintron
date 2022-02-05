@@ -26,7 +26,9 @@ class GithubFile
 
   def blob
     cache_api_request :blob do
-      Base64.decode64(Github.git_data.blobs.get(org, repo, to_gh.sha).content)
+      Base64
+      .decode64(Github.git_data.blobs.get(org, repo, to_gh.sha).content)
+      .encode('UTF-8', :invalid => :replace, :undef => :replace, :replace => '')
     end
   end
 
