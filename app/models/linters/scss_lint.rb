@@ -14,6 +14,14 @@ module Linters
       end
 
       lints.compact.map { |l| lint_to_violation(file, l) }
+    rescue Sass::SyntaxError => e
+      [
+        Violation.new(
+          file: file,
+          line: e.sass_line,
+          message: e.message,
+        )
+      ]
     end
 
     def lint_to_violation(file, lint)

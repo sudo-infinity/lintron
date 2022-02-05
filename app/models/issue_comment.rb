@@ -23,12 +23,13 @@ class IssueComment
     @body = body
   end
 
-  def already_commented?
-    IssueComment.list_from_pr(@pr).any? { |comment| comment.body == @body }
+  def existing_comment
+    @_existing_comment ||=
+      IssueComment.list_from_pr(@pr).find { |comment| comment.body == @body }
   end
 
   def comment!(pr)
-    return if already_commented?
+    return existing_comment if existing_comment.present?
     Github.issues.comments.create @pr.org, @pr.repo, @pr.pr_number, body: @body
   end
 end

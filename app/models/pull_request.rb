@@ -45,6 +45,13 @@ class PullRequest
     end
   end
 
+  def changed_files
+    files.select do |file|
+      status = file.to_gh[:status]
+      %w{modified added}.include?(status)
+    end
+  end
+
   def fetch_file_page(page)
     Github.pull_requests.files org, repo, pr_number, page: page
   end

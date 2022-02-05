@@ -20,11 +20,23 @@ class Commenter
       end
     end
 
-    new_comments.each do |cmt|
+    new_comments[0..50].each do |cmt|
       under_abuse_limit do
         cmt.comment! pr
       end
     end
+
+    bail_out! if new_comments.length > 50
+  end
+
+  def bail_out!
+    IssueComment pr: pr, body: (
+      <<-MARKDOWN
+        ![Am I the only one?](http://www.quickmeme.com/img/f5/f5d74310c80a6085a3152eb5b050d53d4861368d99a2e5654d4ca736f3f566b8.jpg)
+
+        Bailing out due to excessive lints.
+      MARKDOWN
+    ).comment!
   end
 
   def new_comments

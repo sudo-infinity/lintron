@@ -50,7 +50,7 @@ module Linters
   end
 
   def self.violations_for_pr(pr)
-    pr.files
+    pr.changed_files
       .flat_map { |f| violations_for_changes(pr, f) }
       .concat(pr_level_violations(pr))
   end

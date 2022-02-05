@@ -53,6 +53,7 @@ class Comment
           IssueComment.from_line_comment(pr, self).comment!(pr)
         end
     end
+
     @id = cmt.id
     cmt
   end
