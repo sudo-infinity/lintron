@@ -2,6 +2,10 @@ require 'scss_lint'
 
 module Linters
   class SCSSLint < Linters::Base
+    def initialize
+      add_suit
+    end
+
     def run(file)
       engine = ::SCSSLint::Engine.new code: file.blob
       linters = ::SCSSLint::LinterRegistry.linters.map(&:new)
@@ -27,7 +31,18 @@ module Linters
     end
 
     def config
-      ::SCSSLint::Config.load(::SCSSLint::Config::FILE_NAME)
+      @_config ||= ::SCSSLint::Config.load(::SCSSLint::Config::FILE_NAME)
+    end
+
+    SUIT = {
+      'SUIT' => {
+        explanation: 'should follow SUIT conventions',
+        validator: ->(name) { name =~ /^(([A-Z]|(u\-[a-z0-9]))[A-Za-z0-9]*)([\-]{,2}[a-z0-9][A-Za-z0-9]*)+$/ }
+      }
+    }
+
+    def add_suit
+      ::SCSSLint::Linter::SelectorFormat::CONVENTIONS.merge!(SUIT)
     end
   end
 end
