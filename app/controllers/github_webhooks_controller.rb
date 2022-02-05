@@ -6,7 +6,11 @@ class GithubWebhooksController < ApplicationController
 
   def pull_request(payload)
     if LINT_ACTIONS.include? payload['action']
-      puts Linters.violations_for_pr(PullRequest.from_payload(payload))
+      Thread.new do
+        pr = PullRequest.from_payload(payload)
+        violations = Linters.violations_for_pr(pr)
+        Commenter.new(pr: pr, violations: violations).comment!
+      end
     end
 
     head :no_content

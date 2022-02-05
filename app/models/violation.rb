@@ -7,6 +7,10 @@ class Violation
     @message = message
   end
 
+  def position
+    file.patch.position_for_line_number(line)
+  end
+
   def to_s
     inspect
   end

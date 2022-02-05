@@ -30,6 +30,10 @@ class Patch
     end
   end
 
+  def position_for_line_number(line)
+    changed_lines.find { |patch_line| patch_line.number == line }.patch_position
+  end
+
   private
 
   def lines
