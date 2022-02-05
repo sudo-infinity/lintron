@@ -19,6 +19,10 @@ class MockPR
   def latest_commit
     OpenStruct.new sha: 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
   end
+
+  def get_config_file(_filename)
+    nil
+  end
 end
 
 class FixturePR < MockPR

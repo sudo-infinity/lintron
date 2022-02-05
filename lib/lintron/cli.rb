@@ -4,6 +4,12 @@ require 'active_support/all'
 require 'filewatcher'
 require_relative '../../app/models/local_pr_alike'
 
+# ./linters require some extra deps
+require 'brakeman'
+require_relative '../../app/models/linters/base'
+require_relative '../../app/models/linters/js_linter'
+require_relative '../../app/models/linters'
+
 module Lintron
   # Handles setting up flags for CLI runs based on defaults, linty_rc, and
   # command line arguments
@@ -48,7 +54,7 @@ module Lintron
     end
 
     def pr
-      LocalPrAlike.from_branch(org_name, repo_name, base_branch)
+      LocalPrAlike.from_branch(org_name, repo_name, base_branch, repo_path)
     end
 
     def base_branch
