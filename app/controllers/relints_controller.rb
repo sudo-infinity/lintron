@@ -4,7 +4,7 @@ class RelintsController < ApplicationController
 
     Thread.new do
       pr.lint_and_comment!
-      RelintLink.new(pr: pr, request: request).comment!
+      RelintLink.new(pr: pr, request: request).comment
     end
 
     redirect_to pr.to_gh['html_url']
