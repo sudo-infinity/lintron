@@ -3,7 +3,6 @@ class RelintsController < ApplicationController
     pr = PullRequest.new(**pr_params)
 
     Thread.new do
-      PullRequestChecklist.new(pr: pr).comment!
       pr.lint_and_comment!
       RelintLink.new(pr: pr, request: request).comment!
     end

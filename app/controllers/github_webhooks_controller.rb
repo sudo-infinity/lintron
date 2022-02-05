@@ -9,7 +9,6 @@ class GithubWebhooksController < ApplicationController
       Thread.new do
         begin
           pr = PullRequest.from_payload(payload)
-          PullRequestChecklist.new(pr: pr).comment!
           pr.lint_and_comment!
           RelintLink.new(pr: pr, request: request).comment!
         rescue => e
