@@ -144,7 +144,7 @@
     "eol-last": 2,
     "func-names": 2,
     "func-style": 0,
-    "id-length": [2, {"min": 3, "max": 16, "properties": "never", "exceptions": ["i","j","e"]}],
+    "id-length": [2, {"min": 3, "max": 16, "properties": "never", "exceptions": ["i","j","e","id"]}],
     "id-match": 0,
     "indent": [2, 2],
     "key-spacing": [2, {"beforeColon": false, "afterColon": true }],
