@@ -1,4 +1,4 @@
-class GithubFile
+class GithubFile < FileLike
   include ApiCache
   attr_accessor :org, :repo, :to_gh
 
@@ -30,13 +30,5 @@ class GithubFile
       .decode64(Github.git_data.blobs.get(org, repo, to_gh.sha).content)
       .encode('UTF-8', :invalid => :replace, :undef => :replace, :replace => '')
     end
-  end
-
-  def extname
-    File.extname(to_gh.filename).gsub(/^\./, '') # without leading .
-  end
-
-  def basename(ext = nil)
-    File.basename to_gh.filename, ext
   end
 end

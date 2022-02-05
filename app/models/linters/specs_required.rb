@@ -13,13 +13,23 @@ module Linters
       })
     end
 
+    def config_for_extname(extname)
+      config.find do |pattern, config|
+        pattern = Regexp.new("\\A#{pattern}\\Z") unless pattern.class < Regexp
+        pattern.match(extname)
+      end[1]
+    end
+
     def run(pr)
-      filenames = pr.files.map(&:path)
+      files_needing_specs(pr)
+        .flat_map { |f| check_for_matching_spec(pr, f) }
+        .compact
+    end
+
+    def files_needing_specs(pr)
       pr.files
         .select { |f| requires_spec?(f.extname) }
         .reject { |f| is_spec?(f.path) }
-        .flat_map { |f| check_for_matching_spec(pr, f, filenames) }
-        .compact
     end
 
     def is_spec?(filename)
@@ -27,20 +37,16 @@ module Linters
     end
 
     def is_spec_for?(base, candidate)
-      return false unless is_spec?(candidate)
-
+      return false unless is_spec?(candidate.path)
        "#{base.basename('.*')}_spec" == candidate.basename('.*')
     end
 
     def requires_spec?(extname)
-      config.keys.any? do |pattern|
-        pattern = Regexp.new("\\A#{pattern}\\Z") unless pattern.class < Regexp
-        pattern.match(extname)
-      end
+      config_for_extname(extname).present?
     end
 
-    def check_for_matching_spec(pr, file, all_filenames)
-      unless all_filenames.any? { |candidate| is_spec_for?(file, candidate) }
+    def check_for_matching_spec(pr, file)
+      unless pr.files.any? { |candidate| is_spec_for?(file, candidate) }
         spec_missing_violation_for(pr, file)
       end
     end
@@ -67,7 +73,7 @@ module Linters
     end
 
     def expected_spec_path(file)
-      path_pattern = config[file.extname][:app_path_pattern]
+      path_pattern = config_for_extname(file.extname)[:app_path_pattern]
       path_match = File.dirname(path_pattern.match(file.path)[:path])
       "spec/#{path_match}/#{expected_spec_filename(file)}"
     end

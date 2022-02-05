@@ -1,4 +1,4 @@
-class StubFile
+class StubFile < FileLike
   attr_accessor :path, :blob
 
   def initialize(path:, blob:)
