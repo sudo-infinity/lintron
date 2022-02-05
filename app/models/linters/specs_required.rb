@@ -10,7 +10,7 @@ module Linters
         },
         /\A(js|es6|jsx)\Z/ => {
           spec_file_ext: 'js',
-          app_path_pattern: %r{app/assets/(?<path>[^\Z]+)\Z},
+          app_path_pattern: %r{(app/assets/|source/|src/)?(?<path>[^\Z]+)\Z},
         },
       )
     end
@@ -93,6 +93,7 @@ module Linters
 
     def self.expected_spec_path(file)
       path_pattern = config_for_extname(file.extname)[:app_path_pattern]
+      byebug if path_pattern.match(file.path).nil?
       path_match = File.dirname(path_pattern.match(file.path)[:path])
       "spec/#{path_match}/#{expected_spec_filename(file)}"
     end
