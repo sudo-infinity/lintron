@@ -7,6 +7,10 @@ class Violation
     @message = message
   end
 
+  def patch_position
+    file.patch.changed_lines.first { |patch_line| patch_line.number == line }.patch_position
+  end
+
   def to_s
     inspect
   end
