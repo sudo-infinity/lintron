@@ -3,9 +3,10 @@
 class StubFile < FileLike
   attr_accessor :path, :blob
 
-  def initialize(path:, blob:)
+  def initialize(path:, blob:, patch: nil)
     @path = path
     @blob = blob
+    @patch = patch
   end
 
   def patch_from_blob
@@ -15,6 +16,6 @@ class StubFile < FileLike
   end
 
   def patch
-    Patch.new(patch_from_blob)
+    @patch || Patch.new(patch_from_blob)
   end
 end

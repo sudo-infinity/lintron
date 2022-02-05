@@ -13,6 +13,10 @@ describe Linters::SpecsRequired do
     PRWithAllSpecs.new
   end
 
+  let(:pr_with_deletion) do
+    PRWithDeletion.new
+  end
+
   let(:linter) { Linters::SpecsRequired }
 
   it 'catches missing specs for rb files' do
@@ -30,5 +34,13 @@ describe Linters::SpecsRequired do
   it 'ignores PRs with all the correct specs' do
     violations = linter.run(pr_with_all_specs)
     expect(violations.length).to eq 0
+  end
+
+  it 'can handle PRs with deleted files' do
+    violations = nil
+    expect do
+      violations = linter.run(pr_with_deletion)
+    end.to_not raise_error
+    expect(violations).to be_empty
   end
 end

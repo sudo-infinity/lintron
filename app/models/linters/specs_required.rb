@@ -49,6 +49,8 @@ module Linters
 
     def self.check_for_matching_spec(pr, file)
       return if pr.files.any? { |candidate| spec_for?(file, candidate) }
+      # Don't comment unless a line has changed (i.e. don't comment on file deletions)
+      return unless file.first_line_of_patch
       spec_missing_violation_for(pr, file)
     end
 

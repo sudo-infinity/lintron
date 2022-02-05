@@ -10,6 +10,6 @@ class FileLike
   end
 
   def first_line_of_patch
-    patch.changed_lines.first.number
+    patch.changed_lines.first.try(:number)
   end
 end

@@ -70,3 +70,15 @@ class PRWithAllSpecs < MockPR
     filenames.map { |f| StubFile.new(path: f, blob: '') }
   end
 end
+
+class PRWithDeletion < MockPR
+  def files
+    Array(
+      StubFile.new(
+        path: 'deleted.rb',
+        blob: '',
+        patch: DeletedPatch.new
+      )
+    )
+  end
+end
