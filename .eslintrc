@@ -147,7 +147,7 @@
     "eol-last": 2,
     "func-names": 2,
     "func-style": 0,
-    "id-length": [2, {"min": 3, "max": 32, "properties": "never", "exceptions": ["i","j","e","id"]}],
+    "id-length": [2, {"min": 3, "max": 32, "properties": "never", "exceptions": ["i","j","e","id","fs"]}],
     "id-match": 0,
     "indent": [2, 2],
     "key-spacing": [2, {"beforeColon": false, "afterColon": true }],
@@ -158,8 +158,7 @@
         "break":    {"before": true, "after": false},
         "debugger": {"before": true, "after": false},
         "this":     {"before": true, "after": false},
-        "void":     {"before": false, "after": false},
-        "while":    {"before": true, "after": false}
+        "void":     {"before": false, "after": false}
       }
     }],
     "lines-around-comment": 0,
