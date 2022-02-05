@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+require_relative '../config/boot'
+require File.expand_path('../../config/environment', __FILE__)
+require 'byebug'
+
+pr_urls = STDIN.read
+pr_urls = pr_urls.split("\n").map(&:strip)
+
+prs = pr_urls.map { |url| url.gsub('api.', '') }.map do |url|
+  begin
+    PullRequest.from_url(url)
+  rescue Net::OpenTimeout
+    sleep 2
+    retry
+  end
+end
+
+prs.compact!
+
+# TODO: Allow PRs that only delete from tests????
+# TODO: What about migrations?
+# TODO: Disregard closed-but-not-merged
+puts "Org,Repo,URL,Date,Pass,Author"
+prs.each do |pr|
+  begin
+    puts "#{pr.org},#{pr.repo},#{pr.to_gh.html_url},#{pr.to_gh.created_at.to_date.strftime('%Y-%m-%d')},#{Linters::SpecsRequired.run(pr).empty? ? 1 : 0},#{pr.to_gh.user.login}"
+  rescue Github::Error::NotFound
+    puts "Error: #{pr.key}"
+  rescue ArgumentError
+    puts "ArgumentError: #{pr.key}"
+  end
+end
