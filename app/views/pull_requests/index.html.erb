@@ -79,4 +79,11 @@
       </td>
     </tr>
   <% end %>
+  <% if @prs.empty? %>
+    <tr>
+      <td colspan=5>
+        No Pull Requests matching your filters.
+      </td>
+    </tr>
+  <% end %>
 </table>
