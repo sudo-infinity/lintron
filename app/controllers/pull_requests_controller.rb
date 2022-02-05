@@ -1,5 +1,7 @@
 class PullRequestsController < ApplicationController
   def index
+    raise ActionController::RoutingError if current_user.blank?
+
     @prs =
       PullRequest
         .after(begin_date)

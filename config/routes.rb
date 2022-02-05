@@ -9,7 +9,6 @@ Rails.application.routes.draw do
 
   authenticated :user do
     resources :hooks
-
-    resources :pull_requests
   end
+  resources :pull_requests
 end
