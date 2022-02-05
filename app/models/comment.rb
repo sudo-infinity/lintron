@@ -8,7 +8,9 @@ class Comment
   end
 
   def self.from_violation(violation)
-    new(position: violation.patch_position, path: violation.file.path, message: violation.message)
+    new position: violation.position,
+        path: violation.file.path,
+        message: violation.message
   end
 
   def self.from_gh(gh)
@@ -32,11 +34,9 @@ class Comment
       pr.org,
       pr.repo,
       pr.pr_number,
-      {
-        body: message,
-        commit_id: pr.to_gh.head.sha,
-        path: path,
-        position: position
-      }
+      body: message,
+      commit_id: pr.to_gh.head.sha,
+      path: path,
+      position: position
   end
 end

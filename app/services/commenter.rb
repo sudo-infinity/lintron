@@ -21,7 +21,11 @@ class Commenter
 
   def existing_comments
     cache_api_request :existing_comments do
-      Github.pull_requests.comments.list(pr.org, pr.repo, pr.pr_number).map { |cmt| Comment.from_gh cmt }
+      list_from_pr.map { |cmt| Comment.from_gh cmt }
     end
+  end
+
+  def list_from_pr
+    Github.pull_requests.comments.list(pr.org, pr.repo, pr.pr_number)
   end
 end
