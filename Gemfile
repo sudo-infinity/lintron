@@ -57,6 +57,7 @@ gem 'git_diff_parser'
 gem 'httparty'
 gem 'colorize'
 gem 'ruby-terminfo'
+gem 'filewatcher'
 
 group :staging, :production do
   gem 'rails_12factor'

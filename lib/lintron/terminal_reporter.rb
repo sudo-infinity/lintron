@@ -47,12 +47,16 @@ module Lintron
 
       current_word = 0
       line_length = 0
+      last_line_word = 0
       while current_word < words.length
         line_length += words[current_word].length
-        if line_length > width - 5 - indent_level
+        if line_length > width - 5 - indent_level &&
+           current_word > last_line_word
+
           buffer += "\n"
           buffer += ' ' * indent_level
           line_length = indent_level
+          last_line_word = current_word
         else
           buffer += words[current_word]
           buffer += ' '
