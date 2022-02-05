@@ -22,7 +22,7 @@ class Commenter
 
     new_comments[0..50].each do |cmt|
       under_abuse_limit do
-        cmt.comment! pr
+        cmt.comment!
       end
     end
 
