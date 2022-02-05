@@ -8,6 +8,14 @@ class GithubFile
     @to_gh = to_gh
   end
 
+  def path
+    to_gh.filename
+  end
+
+  def patch
+    Patch.new(to_gh.patch)
+  end
+
   def self.from_pr_and_file(pr, file)
     GithubFile.new(
       org: pr.org,
@@ -23,6 +31,6 @@ class GithubFile
   end
 
   def extname
-    File.extname(to_gh.filename)
+    File.extname(to_gh.filename).gsub(/^\./, '') # without leading .
   end
 end

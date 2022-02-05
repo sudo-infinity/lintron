@@ -1,0 +1,3 @@
+class Linters::Base
+
+end
