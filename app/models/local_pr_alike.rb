@@ -6,20 +6,28 @@ require_relative './patch'
 # constructed from the CLI tool (compares local working tree to base_branch) or
 # from the JSON payload that the CLI tool sends to the API
 class LocalPrAlike
-  attr_accessor :files
+  attr_accessor :files, :repo, :org
 
-  def self.from_json(json)
+  def self.from_json(params)
     LocalPrAlike.new.tap do |pr|
-      pr.files = json.map do |file_json|
+      pr.org = params[:org]
+      pr.repo = params[:repo]
+      pr.files = params[:files].map do |file_json|
         StubFile.from_json(file_json)
       end
     end
   end
 
-  def self.from_branch(base_branch)
+  def self.from_branch(org, repo, base_branch)
     LocalPrAlike.new.tap do |pr|
+      pr.org = org
+      pr.repo = repo
       pr.files = pr.stubs_for_existing(base_branch) + pr.stubs_for_new
     end
+  end
+
+  def persisted?
+    false
   end
 
   def stubs_for_existing(base_branch)
@@ -64,13 +72,15 @@ class LocalPrAlike
     path
   end
 
-  def as_json(_opts = {})
+  def files_as_json(_opts = {})
     @files.map(&:as_json)
   end
 
   def to_json(_opts = {})
     {
-      files: as_json.select do |file_json|
+      org: org,
+      repo: repo,
+      files: files_as_json.select do |file_json|
         begin
           JSON.dump(file_json)
           file_json
