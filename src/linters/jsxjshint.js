@@ -16,7 +16,7 @@ module.exports = (function() {
 
     transformedCode = reactTools.transform(code);
     jsHint.JSHINT(transformedCode, config, globals);
-    return _(jsHint.JSHINT.data().errors).map(function(lint) {
+    return _(jsHint.JSHINT.data().errors).compact().map(function lintToError(lint) {
       return { line: lint.line, message: lint.reason };
     });
   };
