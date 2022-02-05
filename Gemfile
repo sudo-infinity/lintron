@@ -41,7 +41,7 @@ gem 'scss-lint'
 gem 'rubocop'
 gem 'brakeman'
 
-gem 'github_api', '~> 0.14.5'
+gem 'github_api', '~> 0.15.0'
 gem 'github_webhook', '~> 1.0.3'
 gem 'omniauth'
 gem 'omniauth-github'

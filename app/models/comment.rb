@@ -65,4 +65,12 @@ class Comment
       pr.repo,
       @id
   end
+
+  def json_for_review
+    {
+      path: path,
+      position: position,
+      body: message,
+    }
+  end
 end

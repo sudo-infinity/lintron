@@ -20,13 +20,21 @@ class Commenter
       end
     end
 
-    new_comments[0..50].each do |cmt|
-      under_abuse_limit do
-        cmt.comment!
-      end
-    end
+    add_review
 
     bail_out! if new_comments.length > 50
+  end
+
+  def add_review
+    body = (new_comments.select { |cmt| cmt.class == IssueComment }).map(&:body).join("\n---\n")
+    if body.empty?
+      body = "http://lintron.herokuapp.com/relint/#{@pr.org}/#{@pr.repo}/#{@pr.pr_number}"
+    end
+
+    Github.pull_requests.reviews.create pr.org, pr.repo, pr.pr_number,
+      body: body,
+      event: "COMMENT",
+      comments: (new_comments.select { |cmt| cmt.class == Comment })[0..50].map(&:json_for_review)
   end
 
   def bail_out!
