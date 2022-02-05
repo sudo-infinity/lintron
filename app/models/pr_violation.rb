@@ -1,9 +1,10 @@
 class PrViolation < Violation
-  attr_accessor :pr, :message
+  attr_accessor :pr, :message, :linter
 
-  def initialize(pr:, message:)
+  def initialize(pr:, message:, linter: nil)
     @pr = pr
     @message = message
+    @linter = linter
   end
 
   def to_comment(pr)
