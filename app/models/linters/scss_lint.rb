@@ -20,6 +20,7 @@ module Linters
           file: file,
           line: e.sass_line,
           message: e.message,
+          linter: Linters::SCSSLint,
         )
       ]
     end
@@ -28,7 +29,8 @@ module Linters
       Violation.new(
         file: file,
         line: lint.location.line,
-        message: lint.description
+        message: lint.description,
+        linter: Linters::SCSSLint,
       )
     end
 
