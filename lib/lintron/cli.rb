@@ -48,7 +48,7 @@ module Lintron
     end
 
     def pr
-      LocalPrAlike.from_branch(base_branch)
+      LocalPrAlike.from_branch(org_name, repo_name, base_branch)
     end
 
     def base_branch
@@ -87,7 +87,7 @@ module Lintron
     end
 
     def config_from_file
-      file_path = File.join(`git rev-parse --show-toplevel`.strip, '.linty_rc')
+      file_path = File.join(repo_path, '.linty_rc')
 
       raise('.linty_rc is missing.') unless File.exist?(file_path)
 
@@ -96,6 +96,30 @@ module Lintron
       rescue JSON::ParserError
         raise('Malformed .linty_rc')
       end
+    end
+
+    def repo_name
+      info = origin_info
+      info ? info[:repo] : Pathname(repo_path).basename
+    end
+
+    def org_name
+      info = origin_info
+      info ? info[:org] : 'local'
+    end
+
+    def repo_path
+      `git rev-parse --show-toplevel`.strip
+    end
+
+    def origin_info
+      origin = `git config --get remote.origin.url`
+      return nil unless origin && origin.split('/').length > 1
+      path_parts = origin.split('/')
+      {
+        org: path_parts[-2],
+        repo: path_parts[-1],
+      }
     end
   end
 end
