@@ -5,6 +5,10 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 .ruby-version
 .env
+.byebug_history
+.rspec
+*.gem
+
 node_modules
 build
 # Ignore bundler config.

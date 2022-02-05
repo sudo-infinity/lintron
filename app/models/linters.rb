@@ -1,5 +1,3 @@
-require 'linters/file_too_long'
-
 module Linters
   class LinterConfig
     attr_accessor :pattern, :linter_class
@@ -75,3 +73,5 @@ module Linters
   @_registered_pr_linters = []
   load_all
 end
+
+Linters::FileTooLong

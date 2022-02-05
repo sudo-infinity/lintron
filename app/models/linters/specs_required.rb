@@ -6,7 +6,7 @@ module Linters
       HashWithIndifferentAccess.new(
         rb: {
           spec_file_ext: 'rb',
-          app_path_pattern: %r{[^/]+/(?<path>[^\Z]+)\Z},
+          app_path_pattern: %r{([^/]+/)?(?<path>[^\Z]+)\Z},
         },
         /\A(js|es6|jsx)\Z/ => {
           spec_file_ext: 'js',
@@ -95,13 +95,13 @@ module Linters
     def self.expected_spec_path(file)
       path_pattern = config_for_extname(file.extname)[:app_path_pattern]
 
-      path_match = File.dirname(path_pattern.match(file.path)[:path])
-      "spec/#{path_match}/#{expected_spec_filename(file)}"
+      path_match = File.dirname(path_pattern.match(file.path)[:path]) + '/'
+      path_match = path_match == './' ? '' : path_match
+      "spec/#{path_match}#{expected_spec_filename(file)}"
     end
 
     def self.expected_spec_url(pr, file)
-      sha = pr.latest_commit.sha
-      "https://github.com/#{pr.org}/#{pr.repo}/blob/#{sha}/#{expected_spec_path(file)}"
+      pr.expected_url_from_path(expected_spec_path(file))
     end
   end
 end

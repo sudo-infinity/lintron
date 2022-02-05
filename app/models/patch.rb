@@ -3,6 +3,8 @@ class Patch
   MODIFIED_LINE = /^\+(?!\+|\+)/
   NOT_REMOVED_LINE = /^[^-]/
 
+  attr_reader :body
+
   def self.from_file_body(source)
     lines = source.lines
     header = "@@ -0,0 +1,#{lines.count} @@\n"

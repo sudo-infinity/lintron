@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require_relative '../lib/lintron'
+
+begin
+  cli = Lintron::CLI.new
+  cli.go
+end
