@@ -13,7 +13,7 @@ module Linters
       scanner.process
       warnings = scanner.tracker.run_checks.warnings
       warnings.map do |warning|
-        Violation.new file: file, line: warning.line, message: warning.message
+        Violation.new file: file, line: warning.line, message: warning.message, linter: Linters::Brakeman
       end
     end
   end

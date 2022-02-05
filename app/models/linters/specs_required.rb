@@ -73,6 +73,7 @@ module Linters
       Violation.new(
         file: file,
         line: file.first_line_of_patch,
+        linter: Linters::SpecsRequired,
         message: <<-message.squish
           Expected changes or additions to a test file called
           [#{expected_spec_filename(file)}](#{expected_spec_url(pr, file)})

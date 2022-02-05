@@ -5,6 +5,7 @@ module Linters
     def self.violation_for(pr, file)
       PrViolation.new(
         pr: pr,
+        linter: Linters::FileTooLong,
         message: <<-message.squish
           #{file.path}: Skipping this file because it is too long.
         message
