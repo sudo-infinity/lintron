@@ -25,16 +25,16 @@ class IssueComment
 
   def existing_comment
     @_existing_comment ||=
-      IssueComment
-      .list_from_pr(@pr)
+      IssueComment.list_from_pr(@pr)
       .find { |comment| similar_bodies(comment.body, @body) }
   end
 
   # Determines if two issues are "similar" enough that we don't need to re-post
-  # Right now we just do this by stripping out checkboxes and comparing what is
-  # left.
+  # Right now we just do this by stripping out whitespace and checkboxes and
+  # comparing what is left (Github interface easily changes the md when you
+  # check a box by changing [ ] to [x] and also inserting whitespace places).
   def similar_bodies(left, right)
-    pattern = /\[(\s|x|X)?\]/
+    pattern = /(\[(\s|x|X)?\]|[\s]+)/
     left.gsub(pattern, '') == right.gsub(pattern, '')
   end
 
