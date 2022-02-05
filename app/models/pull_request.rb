@@ -7,7 +7,7 @@ class PullRequest < ActiveRecord::Base
 
   PR_URL_PATTERN = %r{http(s)?://github.com/(?<org>[^/]+)/(?<repo>[^/]+)/pull/(?<pr_number>[0-9]+)}
 
-  before_save do
+  before_validation do
     self.github_cache = to_gh.to_h
   end
 
