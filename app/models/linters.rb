@@ -40,7 +40,9 @@ module Linters
   end
 
   def self.violations_for_pr(pr)
-    pr.files.flat_map { |f| violations_for_changes(f) }
+    pr.files
+      .flat_map { |f| violations_for_changes(f) }
+      .concat(pr_level_violations(pr))
   end
 
   def self.linter_rbs
@@ -51,6 +53,15 @@ module Linters
     linter_rbs.map { |linter| load linter }
   end
 
+  def self.register_pr_linter(linter_class)
+    @_registered_pr_linters << linter_class
+  end
+
+  def pr_level_violations(pr)
+    @_registered_pr_linters.flat_map { |linter| linter.run(pr) }
+  end
+
   @_registered_linters = []
+  @_registered_pr_linters = []
   load_all
 end

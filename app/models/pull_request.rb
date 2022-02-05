@@ -30,4 +30,16 @@ class PullRequest
       end
     end
   end
+
+  def commits
+    cache_api_request :commits do
+      Github.pull_requests.commits(@org, @repo, @pr_number)
+    end
+  end
+
+  def latest_commit
+    # Yes, you have to do this in this way, because `#last` is not defined on
+    # the structure which comes back from the API gem
+    commits[commits.length - 1]
+  end
 end

@@ -1,4 +1,6 @@
-class GithubFile
+# A file from the Github API. Useful for retrieving file contents and path in
+# an easy way
+class GithubFile < FileLike
   include ApiCache
   attr_accessor :org, :repo, :to_gh
 
@@ -30,9 +32,5 @@ class GithubFile
       .decode64(Github.git_data.blobs.get(org, repo, to_gh.sha).content)
       .encode('UTF-8', :invalid => :replace, :undef => :replace, :replace => '')
     end
-  end
-
-  def extname
-    File.extname(to_gh.filename).gsub(/^\./, '') # without leading .
   end
 end
