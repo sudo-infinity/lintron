@@ -2,12 +2,11 @@ module Linters
   # A linter that detects whether specs are updated when the corresponding
   # application code changes
   class FileTooLong < Linters::Base
-    def self.violation_for(file)
-      Violation.new(
-        file: file,
-        line: file.first_line_of_patch,
+    def self.violation_for(pr, file)
+      PrViolation.new(
+        pr: pr,
         message: <<-message.squish
-          Skipping this file because it is too long.
+          #{file.path}: Skipping this file because it is too long.
         message
       )
     end

@@ -10,12 +10,6 @@ class Comment
     @id = id
   end
 
-  def self.from_violation(violation)
-    new position: violation.position,
-        path: violation.file.path,
-        message: violation.message
-  end
-
   def self.from_gh(gh, pr)
     new(position: gh.position, path: gh.path, message: gh.body, id: gh.id)
   end
@@ -44,14 +38,20 @@ class Comment
 
   def comment!(pr)
     cmt = cache_api_request :to_gh do
-      Github.pull_requests.comments.create \
-        pr.org,
-        pr.repo,
-        pr.pr_number,
-        body: message,
-        commit_id: pr.to_gh.head.sha,
-        path: path,
-        position: position
+      begin
+        Github.pull_requests.comments.create \
+          pr.org,
+          pr.repo,
+          pr.pr_number,
+          body: message,
+          commit_id: pr.to_gh.head.sha,
+          path: path,
+          position: position
+        rescue Github::Error::UnprocessableEntity => e
+          # Try to post a PR comment instead, because this mostly happens if the
+          # patch has no lines in github (which means no line comments can post)
+          IssueComment.from_line_comment(pr, self).comment!(pr)
+        end
     end
     @id = cmt.id
     cmt

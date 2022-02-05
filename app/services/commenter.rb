@@ -36,7 +36,7 @@ class Commenter
   end
 
   def all_comments
-    violations.map { |v| Comment.from_violation(v) }
+    violations.map { |v| v.to_comment }
   end
 
   def existing_comments

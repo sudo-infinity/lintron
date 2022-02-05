@@ -39,9 +39,9 @@ module Linters
     end
   end
 
-  def self.violations_for_changes(file)
+  def self.violations_for_changes(pr, file)
     if file.patch.changed_lines.length > 1000
-      [Linters::FileTooLong.violation_for(file)]
+      [Linters::FileTooLong.violation_for(pr, file)]
     else
       all_violations(file).select do |v|
         file.patch.changed_lines.map(&:number).include?(v.line)
@@ -51,7 +51,7 @@ module Linters
 
   def self.violations_for_pr(pr)
     pr.files
-      .flat_map { |f| violations_for_changes(f) }
+      .flat_map { |f| violations_for_changes(pr, f) }
       .concat(pr_level_violations(pr))
   end
 
