@@ -5,9 +5,11 @@ class PullRequest < ActiveRecord::Base
     org_name, repo_name = repo_slug.split('/')
     self.for(org_name, repo_name)
   end)
+  scope :for_repo_or_all, ->(repo_slug) { repo_slug.present? ? for_repo(repo_slug) : all }
   scope :for, ->(org, repo) { where(org: org, repo: repo) }
   scope :merged, -> { where("(github_cache->>'merged')::boolean") }
   scope :unmerged, -> { where("not (github_cache->>'merged')::boolean") }
+  scope :report_order, -> { order("org ASC, repo ASC, github_cache->>'created_at' DESC") }
 
   include ApiCache
 
