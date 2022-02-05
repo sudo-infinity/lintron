@@ -2,7 +2,7 @@ module Linters
   # Defines the default relationship between the run_and_filter, run and
   # filter_messages methods of linters (i.e. don't filter any lints)
   class Base
-    def initialize(linter_config)
+    def initialize(linter_config = nil)
       @linter_config = linter_config
     end
 
