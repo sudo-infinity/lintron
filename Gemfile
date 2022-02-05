@@ -64,6 +64,8 @@ gem 'chronic'
 gem 'business_time'
 gem 'holidays'
 
+gem 'breakpoint'
+
 group :staging, :production do
   gem 'rails_12factor'
 end

@@ -5,8 +5,9 @@ Rails.application.routes.draw do
 
   resources :local_lints
 
-  devise_scope :user do
-    root to: 'hooks#index'
+  root to: 'hooks#index'
+
+  authenticated :user do
     resources :hooks
 
     resources :pull_requests

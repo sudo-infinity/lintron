@@ -2,28 +2,26 @@ class PullRequestsController < ApplicationController
   def index
     scope = PullRequest
 
-    if params.key?(:week_of)
-      scope =
-        scope
-        .after(Chronic.parse(params[:week_of]).beginning_of_week)
-        .before(Chronic.parse(params[:week_of]).end_of_week)
-    elsif params[:date].present?
+    begin_date = 2.week.ago.beginning_of_day
+    end_date = 1.day.from_now.end_of_day
+    if params[:start_date].present?
       if params[:date] == 'prior business day'
-        scope =
-          scope
-          .after(1.business_day.ago.beginning_of_day)
-          .before(1.business_day.ago.end_of_day)
+        begin_date = 1.business_day.ago.beginning_of_day
       else
-        scope =
-          scope
-          .after(Chronic.parse(params[:date]).beginning_of_day)
-          .before(Chronic.parse(params[:date]).beginning_of_day + 1.day)
+        begin_date = Chronic.parse(params[:start_date]).beginning_of_day
       end
-    else
-      scope =
-        scope.
-        after(2.weeks.ago)
+      end_date = begin_date.end_of_day
     end
+
+    if params[:end_date].present?
+      if params[:date] == 'prior business day'
+        end_date = 1.business_day.ago.end_of_day
+      else
+        end_date = Chronic.parse(params[:end_date]).end_of_day
+      end
+    end
+
+    scope = scope.after(begin_date).before(end_date)
 
     if params.key?(:merged)
       case params[:merged]
@@ -32,6 +30,10 @@ class PullRequestsController < ApplicationController
       when "false"
         scope = scope.unmerged
       end
+    end
+
+    if params[:repo].present?
+      scope = scope.for_repo(params[:repo])
     end
 
     @prs =

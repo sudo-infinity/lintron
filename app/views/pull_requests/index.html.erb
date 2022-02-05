@@ -1,62 +1,82 @@
-<div class="row">
-  <div class="column small-12">
-    <table>
-      <thead>
-        <tr>
-          <th>
-            Org
-          </th>
-          <th>
-            Repo
-          </th>
-          <th>
-            Number
-          </th>
-          <th>
-            PR
-          </th>
-          <th>
-            Tests?
-          </th>
-          <th>
-            Created
-          </th>
-          <th>
-            Author
-          </th>
-          <th>
-            Merged
-          </th>
-        </tr>
-      </thead>
-      <% @prs.each do|pr| %>
-        <tr class="TableRow">
-          <th>
-            <%= pr.org %>
-          </th>
-          <th>
-            <%= pr.repo %>
-          </th>
-          <th>
-            <%= pr.pr_number %>
-          </th>
-          <td>
-            <%= link_to pr.github_cache.html_url, pr.github_cache.html_url, target: '_blank' %>
-          </td>
-          <td>
-            <%= pr.tests? ? 1 : 0 %>
-          </td>
-          <td>
-            <%= pr.github_cache['created_at'] %>
-          </td>
-          <td>
-            <%= pr.github_cache['user']['login'] %>
-          </td>
-          <td>
-            <%= pr.github_cache['merged'] %>
-          </td>
-        </tr>
-      <% end %>
-    </table>
+<h2>
+  <%= link_to 'Pull Requests', pull_requests_url %>
+  <% if params[:repo].present? %>
+    > <%= link_to params[:repo], pull_requests_url(repo: params[:repo]) %>
+  <% end %>
+</h2>
+
+<form method="GET" action="/pull_requests">
+  <div class="rev-Row rev-Row--collapse">
+  <label class="rev-InputStack rev-Col rev-Col--medium3">
+    Start date
+    <input name="start_date" placeholder="YYYY-MM-DD" value="<%= params[:start_date] %>" class="rev-Input" />
+  </label>
+  <label class="rev-InputStack rev-Col rev-Col--medium3">
+    End date
+    <input name="end_date" placeholder="YYYY-MM-DD" value="<%= params[:end_date] %>" class="rev-Input">
+  </label>
+  <label class="rev-Col rev-Col--medium3 rev-InputStack ">
+    Merged?
+    <select name="merged" class="rev-Select rev-Select--expanded rev-Select--unrounded">
+      <option name="merged" value="" <%= params[:merged].blank? && 'selected' %>>Merged?</option>
+      <option name="merged" value="true" <%= params[:merged] == 'true' && 'selected' %>>Merged</option>
+      <option name="merged" value="false" <%= params[:merged] == 'false' && 'selected'%>>Unmerged</option>
+    </select>
+  </label>
+  <label class="rev-Col rev-Col--medium3 rev-InputStack ">
+    &nbsp;
+    <button class="rev-Button rev-Button--small rev-Button--expanded">Filter</button>
+  </label>
   </div>
-</div>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        PR
+      </th>
+      <th>
+        Tests?
+      </th>
+      <th>
+        Merged?
+      </th>
+      <th>
+        Created
+      </th>
+      <th>
+        Author
+      </th>
+    </tr>
+  </thead>
+  <% @prs.each do|pr| %>
+    <tr class="TableRow">
+      <td>
+        <%= link_to pr.github_cache.html_url, target: '_blank'  do %>
+          <%= pr.org %>/<%= pr.repo %>/<%= pr.pr_number %>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to pr.github_cache.html_url, target: '_blank'  do %>
+          <%= pr.tests? ? 1 : 0 %>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to pr.github_cache.html_url, target: '_blank'  do %>
+          <%= pr.github_cache['merged'] ? 1 : 0 %>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to pr.github_cache.html_url, target: '_blank'  do %>
+          <%= pr.github_cache['created_at'].to_date.strftime('%Y-%m-%d') %>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to pr.github_cache.html_url, target: '_blank'  do %>
+          <%= pr.github_cache['user']['login'] %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

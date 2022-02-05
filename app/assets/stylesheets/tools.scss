@@ -1,33 +1,20 @@
-@import 'globals';
+@import 'revelry_components/vars/colors';
 .black-paper{
-  background: $light_black;
+  background: $darker-gray;
 }
 .black-paper-bg{
   background: $black;
 }
-.background{
-  background: $background_color;
-}
-.background-paper{
-  background: $background_paper;
+.background-paper {
+  @include color-stack($black);
 }
 .paper{
   background: $white;
 }
 .paper-bg{
-  background: $sub_white;
+  background: $lightest-gray;
 }
-.accent-paper{
 
-}
-.main-paper{
-
-}
-$valid:#99d600;
-$error:#d82f77;
-$alert:#ffda00;
-$blocked:#ccc;
-$accent:#41a4f4;
 // deep ends
 
 img{
@@ -38,28 +25,13 @@ img{
     image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
     -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
 
-  //    transform: translate3d(0,0,0);
-  //-moz-transform: translate3d(0,0,0);
-  //-webkit-transform: translate3d(0,0,0);
-
   -webkit-backface-visibility: hidden;
-  //-webkit-transform: translateZ(0);
-//transform: translateZ(0);
 }
 .imageAGPU{
     transform: translate3d(0,0,0);
   -moz-transform: translate3d(0,0,0);
   -webkit-transform: translate3d(0,0,0);
 
-}
-div{
-  //  image-rendering: optimizeSpeed;             /*  GIVE ME SPEED  */
-  //  image-rendering: -moz-crisp-edges;          /* Firefox                        */
-  //  image-rendering: -o-crisp-edges;            /* Opera                          */
-  //  image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
-  //  image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
-  //  -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
-   //  -webkit-backface-visibility: hidden;
 }
 select{
     outline: 0px;
@@ -96,24 +68,6 @@ select{
 }
 }
 
-
-input, textarea{
-  border:0px;
-  background:transparent;
-}
-input:focus {
-  outline: 0;
-  border-color: $primary_color_accent;
-}
-textarea:focus{
-  outline:0;
-  border-color: $primary_color_accent;
-}
-a{
-  text-decoration: none;
-  cursor:pointer;
-  color:$black;
-}
 html{
   -webkit-backface-visibility: hidden;
   overflow-x: hidden;
@@ -288,7 +242,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', e
   position:relative;
   width:100%;
   height:0px;
-  border-bottom: solid 1px $sub_white;
+  border-bottom: solid 1px $divider-color;
 }
 .elipsise{
   text-overflow: ellipsis;
@@ -305,10 +259,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', e
   color:$white;
 }
 .color-accent-text{
-  color:$primary_color_accent;
+  color:$primary-color;
 }
 .color-text{
-  color:$primary_color;
+  color:$primary-color;
 }
 .breathe{
   padding: 50px;
