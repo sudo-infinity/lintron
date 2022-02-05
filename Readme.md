@@ -2,6 +2,8 @@
 
 Automatically lints Github Pull Requests and posts lints as review comments.
 
+![Example Comment](https://raw.githubusercontent.com/prehnRA/lintron/master/example.png)
+
 ## Setup
 
 ```
