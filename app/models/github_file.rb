@@ -15,7 +15,11 @@ class GithubFile < FileLike
   end
 
   def patch
-    Patch.new(to_gh.patch)
+    if to_gh.patch
+      Patch.new(to_gh.patch)
+    else
+      Patch.from_file_body(blob)
+    end
   end
 
   def self.from_pr_and_file(pr, file)

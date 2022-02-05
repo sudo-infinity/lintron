@@ -3,6 +3,13 @@ class Patch
   MODIFIED_LINE = /^\+(?!\+|\+)/
   NOT_REMOVED_LINE = /^[^-]/
 
+  def self.from_file_body(source)
+    lines = source.lines
+    header = "@@ -0,0 +1,#{lines.count} @@\n"
+    body = header + lines.map { |line| "+#{line}"}.join
+    new(body)
+  end
+
   def initialize(body)
     @body = body || ''
   end
