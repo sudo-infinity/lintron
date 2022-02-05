@@ -1,0 +1,21 @@
+<div class='header'>
+  <div class="background-paper header">
+    <div class="logo-container">
+      <img class="logo-container-img" src="images/lintron_icon_grid.svg" />
+    </div>
+    <div class="powered-by-revelry">
+      <img src="images/powered_rev.png" />
+    </div>
+  </div>
+  <ul class='header-nav'>
+    <li>
+      <% unless user_signed_in? %>
+        <a class='right-text ' href="<%= user_omniauth_authorize_path(:github) %>">
+          <i class='github-icon'><img src="images/lintron_icon_grid.svg" alt="" /></i>
+        </a>
+        <a class='right-text github-signin big' href="<%= user_omniauth_authorize_path(:github) %>">Sign in with Github</a>
+        <!--<%= link_to "Sign in with Github", user_omniauth_authorize_path(:github) %>-->
+      <% end %>
+    </li>
+  </ul>
+</div>

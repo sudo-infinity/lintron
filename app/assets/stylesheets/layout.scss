@@ -1,0 +1,45 @@
+.hero{
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+}
+.header-spacing{
+  height: 60px;
+}
+.header{
+  position:fixed;
+  float: left;
+  width: 100%;
+  height: 60px;
+  z-index: 200;
+}
+.header-nav{
+  position: fixed;
+  width: 100%;
+  height: auto;
+  z-index: 201;
+}
+.hooks-display{
+  position: relative;
+  width: 100%;
+  min-height: 150px;
+  overflow: auto;
+}
+//containers
+.main-container{
+  width: 1280px;
+  position: relative;
+  left: 50%;
+  margin-left: -640px;
+  padding-bottom: 20px;
+}
+.three-column{
+    width: 32.9%;
+    float: left;
+    position: relative;
+}
+.two-column{
+    width: 48.9%;
+    float: left;
+    position: relative;
+}

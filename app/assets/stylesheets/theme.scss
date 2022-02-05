@@ -1,0 +1,174 @@
+//header themes
+@import 'globals';
+.header{
+  .powered-by-revelry{
+      position: absolute;
+      left: 180px;
+      top: 18px;
+      img{
+        width: 55px;
+      }
+  }
+}
+.github-signin{
+  text-transform: uppercase;
+  color: $white;
+  float: right;
+  top: 20px;
+  right: 80px;
+  position: relative;
+}
+.github-icon{
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  position: relative;
+  float: right;
+  top: 10px;
+  right: 60px;
+  img{
+    width: 1440px;
+    height: auto;
+    position: relative;
+    margin: -27px -10px 0px -270px;
+  }
+}
+.logo-container{
+  width: 120px;
+  height: 100px;
+  overflow: hidden;
+  position: absolute;
+  top: 5px;
+  margin-left: 60px;
+  .logo-container-img{
+    width: 720px;
+    height: auto;
+  }
+}
+//splash themes
+.hero-splash{
+  width: 100%;
+  height: 100%;
+  background: url('/images/lintron-hero-bg.png') $background_color;
+  background-size: cover;
+  background-position: center;
+}
+
+//hooks themes
+.super-logo{
+  width: 720px;
+  height:250px;
+  margin-bottom: 50px;
+  left: 50%;
+  margin-left: -360px;
+  position: relative;
+  overflow: hidden;
+  top: 120px;
+  margin-bottom: 130px;
+  img{
+    width:4000px;
+    max-width: inherit;
+    height: auto;
+  }
+  .powered-by-revelry{
+      position: absolute;
+      left: 300px;
+      top: 215px;
+      img{
+        width: inherit;;
+      }
+  }
+}
+//style encapsulation workaround
+
+.lintron-styles{
+  img{
+    max-width: inherit;
+  }
+  //global themes
+  p{
+    font-family: 'Open Sans', sans-serif;
+    letter-spacing: 2px;
+    font-size: 14px;
+    color:$white;
+  }
+  a{
+    font-family: 'Open Sans', sans-serif;
+    letter-spacing: 0px;
+    font-size: 14px;
+    color:$white;
+    text-decoration: none;
+  }
+  h1{
+    font-size: 80pt;
+    margin: 0px;
+    letter-spacing: 6px;
+    color:$white;
+    font-family: 'Open Sans', sans-serif;
+    font-style: italic;
+  }
+  h2{
+    color:$white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 65px;
+    margin:0px;
+    letter-spacing: 0px;
+  }
+  h3{
+    color:$white;
+    font-family: 'Open Sans', sans-serif;
+    letter-spacing: 2px;
+    text-transform: capitalize;
+    font-size: 16px;
+    margin: 0px;
+  }
+  h4{
+
+    text-transform: capitalize;
+    font-size: 12px;
+    font-weight: 100;
+    margin:5px;
+  }
+  .white-text{
+    color:$white;
+  }
+  .color-accent-text{
+    color:$primary_color_accent;
+  }
+  .color-text{
+    color:$primary_color;
+  }
+  //form styles
+  .hooks-form{
+    border: solid 2px #cccccc;
+    width: 95%;
+    height: 60px;
+    margin: 0px;
+    padding: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .hooks-form:hover{
+    border: solid 2px $primary_color_accent_shadow;
+  }
+  .hooks-form:focus{
+    border: solid 2px $primary_color_accent;
+    color:$primary_color_accent;
+  }
+  .hooks-button{
+    background: $primary_color_accent;
+    width: 95%;
+    height: 60px;
+    color:$white;
+    margin: 0px;
+    font-style: italic;
+    font-weight: 900;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .hooks-button:hover{
+    background: $primary_color_accent_shadow;
+  }
+}
