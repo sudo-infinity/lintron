@@ -25,7 +25,15 @@ class IssueComment
 
   def existing_comment
     @_existing_comment ||=
-      IssueComment.list_from_pr(@pr).find { |comment| comment.body == @body }
+      IssueComment.list_from_pr(@pr).find { |comment| similar_bodies(comment.body, @body) }
+  end
+
+  # Determines if two issues are "similar" enough that we don't need to re-post
+  # Right now we just do this by stripping out checkboxes and comparing what is
+  # left.
+  def similar_bodies(left, right)
+    pattern = /\[(\s|x|X)?\]/
+    left.gsub(pattern, '') == right.gsub(pattern, '')
   end
 
   def comment!
