@@ -1,3 +1,5 @@
+require 'scss_lint'
+
 module Linters
   class SCSSLint < Linters::Base
     def run(file)
