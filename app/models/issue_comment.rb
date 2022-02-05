@@ -25,7 +25,9 @@ class IssueComment
 
   def existing_comment
     @_existing_comment ||=
-      IssueComment.list_from_pr(@pr).find { |comment| similar_bodies(comment.body, @body) }
+      IssueComment
+      .list_from_pr(@pr)
+      .find { |comment| similar_bodies(comment.body, @body) }
   end
 
   # Determines if two issues are "similar" enough that we don't need to re-post
