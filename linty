@@ -6,7 +6,7 @@ require 'colorize'
 require 'terminfo'
 require_relative './app/models/local_pr_alike'
 
-pr = LocalPRAlike.from_branch('origin/master')
+pr = LocalPrAlike.from_branch('origin/master')
 
 response = HTTParty.post('http://localhost:3000/local_lints', body: {files: pr.as_json}.to_json, headers: { 'Content-Type' => 'application/json', 'Accept' => 'application/json' })
 

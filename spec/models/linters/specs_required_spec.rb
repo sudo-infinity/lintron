@@ -66,7 +66,7 @@ describe Linters::SpecsRequired do
       patch: Patch.from_file_body(body),
     )
 
-    pr = LocalPRAlike.from_json(
+    pr = LocalPrAlike.from_json(
       [
         file.as_json,
       ],

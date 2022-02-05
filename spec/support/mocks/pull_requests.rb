@@ -8,6 +8,10 @@ class MockPR
     'exemplar'
   end
 
+  def expected_url_from_path(path)
+    path
+  end
+
   def latest_commit
     OpenStruct.new sha: 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
   end
@@ -24,6 +28,10 @@ class FixturePR < MockPR
 
   def relative_path_of(full_path)
     Pathname.new(full_path).relative_path_from(fixture_dir).to_s
+  end
+
+  def changed_files
+    files
   end
 
   def files
