@@ -5,7 +5,6 @@ class LocalLintsController < ApplicationController
 
   def create
     pr = LocalPrAlike.from_json(params[:files])
-    puts pr.files.map(&:path)
     violations = Linters.violations_for_pr(pr)
 
     render json: violations
