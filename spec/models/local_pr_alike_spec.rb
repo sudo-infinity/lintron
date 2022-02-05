@@ -38,4 +38,32 @@ index dcf9ed7..8afc9c4 100644
       end
     end
   end
+
+  describe '#load_linter_configs' do
+    let(:pr) do
+      LocalPrAlike.new.tap do |pr|
+        allow(pr).to receive(:files) { SampleStubFile.all }
+      end
+    end
+
+    it 'loads linter config files when found' do
+      allow(File).to receive(:exist?).and_return(true)
+      pr.load_linter_configs('/tmp')
+      expect(pr.get_config_file('.eslintrc').path).to eq('/tmp/.eslintrc')
+      expect(pr.get_config_file('.rubocop.yml').path).to eq('/tmp/.rubocop.yml')
+    end
+
+    it 'returns nil when linter configs are not found' do
+      allow(File).to receive(:exist?).and_return(false)
+      pr.load_linter_configs('/tmp')
+      expect(pr.get_config_file('.eslintrc')).to be(nil)
+      expect(pr.get_config_file('.rubocop.yml')).to be(nil)
+    end
+
+    it 'returns nil for configs associated with no linters' do
+      allow(File).to receive(:exist?).and_return(true)
+      pr.load_linter_configs('/tmp')
+      expect(pr.get_config_file('.no_such_linter')).to be(nil)
+    end
+  end
 end

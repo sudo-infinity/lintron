@@ -25,13 +25,19 @@ module Linters
     end
 
     def cmd(file)
+      config = @linter_config ? ('-c ' + @linter_config.path) : ''
       <<-CMD.squish
         node_modules/eslint/bin/eslint.js
         -f json
         --stdin
         --stdin-filename #{file.path}
+        #{config}
         2>&1
       CMD
+    end
+
+    def self.config_filename
+      '.eslintrc'
     end
   end
 end
