@@ -109,6 +109,8 @@ class PullRequest < ActiveRecord::Base
   end
 
   def fetch_config_file(filename)
+    return nil unless filename
+
     response = Github.repos.contents.get(
       user: org,
       repo: repo,
