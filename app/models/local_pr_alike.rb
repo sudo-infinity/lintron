@@ -67,4 +67,18 @@ class LocalPrAlike
   def as_json(_opts = {})
     @files.map(&:as_json)
   end
+
+  def to_json(_opts = {})
+    {
+      files: as_json.select do |file_json|
+        begin
+          JSON.dump(file_json)
+          file_json
+        rescue JSON::GeneratorError
+          puts "Ignoring #{file_json[:path]}, possible binary"
+          nil
+        end
+      end,
+    }.to_json
+  end
 end

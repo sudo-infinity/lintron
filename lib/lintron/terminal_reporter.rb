@@ -7,6 +7,7 @@ module Lintron
   class TerminalReporter
     def format_violations(violations)
       row_header_width = violations.map { |v| v.file_and_line.length }.max
+      return no_violations if violations.empty?
       last_file = violations.first.path
       buffer = ''
 
@@ -16,6 +17,10 @@ module Lintron
       end
       buffer += "\n\n"
       buffer
+    end
+
+    def no_violations
+      "No violations found!".colorize(:green)
     end
 
     def do_line(violation, last_file, row_header_width)

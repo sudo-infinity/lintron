@@ -7,6 +7,7 @@
 .env
 .byebug_history
 .rspec
+*.gem
 
 node_modules
 build

@@ -1,27 +1,35 @@
 require 'rubygems'
 require 'httparty'
+require 'byebug'
 
 module Lintron
   # Makes requests to the lintron local lint API
   class API
+    def initialize(base_url)
+      @base_url = base_url
+    end
+
     def violations(pr)
+      response = post_lint_request(pr)
       violations =
         JSON
-        .parse(post_lint_request(pr).body)
+        .parse(response.body)
         .map { |json| Lintron::ViolationLine.new(json) }
 
       violations.sort_by(&:file_and_line)
+    rescue JSON::ParserError => e
+      puts 'An error occurred while parsing response from Lintron'.colorize(:red)
+      puts 'Raw response body: '
+      puts response.body
     end
 
     def post_lint_request(pr)
-      HTTParty.post('http://localhost:3000/local_lints', request_params(pr))
+      HTTParty.post(URI.join(@base_url, 'local_lints'), request_params(pr))
     end
 
     def request_params(pr)
       {
-        body: {
-          files: pr.as_json,
-        }.to_json,
+        body: pr.to_json,
         headers: {
           'Content-Type' => 'application/json',
           'Accept' => 'application/json',

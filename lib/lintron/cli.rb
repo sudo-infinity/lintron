@@ -43,7 +43,7 @@ module Lintron
     end
 
     def go_once
-      violations = Lintron::API.new.violations(pr)
+      violations = Lintron::API.new(config[:base_url]).violations(pr)
       puts Lintron::TerminalReporter.new.format_violations(violations)
     end
 
@@ -57,7 +57,7 @@ module Lintron
 
     def config
       defaults
-        .merge(config_from_file.symbolize_keys)
+        .merge(validated_config_from_file)
         .merge(@options)
         .merge(
           {
@@ -76,17 +76,25 @@ module Lintron
       }
     end
 
+    def validated_config_from_file
+      config = config_from_file
+
+      unless config.key?(:base_url)
+        raise('.linty_rc missing required key: base_url')
+      end
+
+      config
+    end
+
     def config_from_file
       file_path = File.join(`git rev-parse --show-toplevel`.strip, '.linty_rc')
 
-      if File.exist?(file_path)
-        begin
-          JSON.parse(File.read(file_path))
-        rescue JSON::ParserError
-          raise('Malformed .linty_rc')
-        end
-      else
-        {}
+      raise('.linty_rc is missing.') unless File.exist?(file_path)
+
+      begin
+        JSON.parse(File.read(file_path)).symbolize_keys
+      rescue JSON::ParserError
+        raise('Malformed .linty_rc')
       end
     end
   end

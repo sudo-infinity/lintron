@@ -1,3 +1,4 @@
 {
-  "base_branch": "origin/master"
+  "base_branch": "origin/master",
+  "base_url": "http://localhost:3000"
 }
