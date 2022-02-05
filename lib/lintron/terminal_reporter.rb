@@ -20,7 +20,7 @@ module Lintron
     end
 
     def no_violations
-      "No violations found!".colorize(:green)
+      'No violations found!'.colorize(:green)
     end
 
     def do_line(violation, last_file, row_header_width)

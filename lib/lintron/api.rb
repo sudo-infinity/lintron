@@ -17,8 +17,8 @@ module Lintron
         .map { |json| Lintron::ViolationLine.new(json) }
 
       violations.sort_by(&:file_and_line)
-    rescue JSON::ParserError => e
-      puts 'An error occurred while parsing response from Lintron'.colorize(:red)
+    rescue JSON::ParserError
+      puts 'Error occurred while parsing response from Lintron'.colorize(:red)
       puts 'Raw response body: '
       puts response.body
     end
