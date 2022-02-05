@@ -1,6 +1,10 @@
 Rails:
   Enabled: true
 
+AllCops:
+  Exclude:
+  - db/schema.rb
+
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 
