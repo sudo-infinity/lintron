@@ -44,7 +44,7 @@ module Linters
   end
 
   def self.linter_rbs
-    Dir[File.join(File.dirname(__FILE__), 'linters', '**', '*')]
+    Dir[File.join(File.dirname(__FILE__), 'linters', '**', '*.rb')]
   end
 
   def self.load_all
