@@ -23,3 +23,7 @@ build
 !/log/.keep
 /tmp
 coverage
+
+# Elixir Ignores
+_build
+deps
