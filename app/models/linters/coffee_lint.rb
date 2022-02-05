@@ -1,5 +1,9 @@
 module Linters
   class CoffeeLint < Linters::JSLinter
+    def self.config_filename
+      'coffeelint.json'
+    end
+
     def self.config_path
       Rails.root.join('coffeelint.json')
     end

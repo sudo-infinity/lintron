@@ -1,5 +1,9 @@
 module Linters
   class Brakeman < Linters::Base
+    def self.config_filename
+      'brakeman.yml'
+    end
+
     def options_from_file
       YAML.load_file(Rails.root.join 'brakeman.yml') || {}
     end

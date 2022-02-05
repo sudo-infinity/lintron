@@ -39,6 +39,10 @@ module Linters
         )
       end
     end
+
+    def self.config_filename
+      '.pylintrc'
+    end
   end
 end
 

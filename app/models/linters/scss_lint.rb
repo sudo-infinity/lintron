@@ -2,6 +2,10 @@ require 'scss_lint'
 
 module Linters
   class SCSSLint < Linters::Base
+    def self.config_filename
+      ::SCSSLint::Config::FILE_NAME
+    end
+
     def initialize
       add_suit
     end

@@ -2,6 +2,10 @@ module Linters
   # A linter that detects whether any tests have been edited or added (bc each
   # PR should have tests)
   class SpecsRequired < Linters::Base
+    def self.config_filename
+      '.linty_rc'
+    end
+
     def self.run(pr)
       return [] if any_tests(pr)
 

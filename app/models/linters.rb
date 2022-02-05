@@ -33,7 +33,7 @@ module Linters
   def self.all_violations(pr, file)
     linter_classes = linters_for(file.extname)
     linter_classes.flat_map do |c|
-      linter = c.new(pr.get_config_file(c.config_filename))
+      linter = c.new(pr.get_config_file(c.config_filename)) rescue byebug
       linter.run_and_filter(file)
     end
   end
