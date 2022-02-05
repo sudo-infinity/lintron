@@ -40,6 +40,10 @@ module Linters
   def self.violations_for_changes(file)
     all_violations(file).select { |v| file.patch.changed_lines.map(&:number).include?(v.line) }
   end
+
+  def self.violations_for_pr(pr)
+    pr.files.flat_map { |f| violations_for_changes(f) }
+  end
 end
 
 require 'linters/base'
