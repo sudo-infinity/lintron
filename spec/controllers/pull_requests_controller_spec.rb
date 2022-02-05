@@ -8,14 +8,46 @@ def pr_with_params(attrs)
 end
 
 RSpec.describe PullRequestsController, type: :controller do
+  let!(:merged_lintron_two_weeks_ago) do
+    pr_with_params(
+      org: 'revelrylabs',
+      repo: 'lintron',
+      pr_number: 123,
+      github_cache: { created_at: Time.zone.now - 2.week, merged: true },
+    )
+  end
+
+  let!(:unmerged_lintron_one_week_ago) do
+    pr_with_params(
+      org: 'revelrylabs',
+      repo: 'lintron',
+      pr_number: 124,
+      github_cache: { created_at: Time.zone.now - 1.week, merged: false },
+    )
+  end
+
+  let!(:unmerged_lintron_today) do
+    pr_with_params(
+      org: 'revelrylabs',
+      repo: 'lintron',
+      pr_number: 125,
+      github_cache: { created_at: Time.zone.now, merged: false  },
+    )
+  end
+
+  let!(:unmerged_other_today) do
+    pr_with_params(
+      org: 'revelrylabs',
+      repo: 'other',
+      pr_number: 1,
+      github_cache: { created_at: Time.zone.now, merged: false  },
+    )
+  end
+
   before :each do
-    user = User.new
+    user = User.create!(email: 'rufus@example.com', password: 'testingly')
     sign_in user
     allow_any_instance_of(PullRequest).to receive(:to_gh).and_return({})
-    pr_with_params(org: 'revelrylabs', repo: 'lintron', pr_number: 123, github_cache: { created_at: Time.zone.now - 2.week, merged: true })
-    pr_with_params(org: 'revelrylabs', repo: 'lintron', pr_number: 124, github_cache: { created_at: Time.zone.now - 1.week, merged: false })
-    pr_with_params(org: 'revelrylabs', repo: 'lintron', pr_number: 125, github_cache: { created_at: Time.zone.now, merged: false  })
-    pr_with_params(org: 'revelrylabs', repo: 'other', pr_number: 1, github_cache: { created_at: Time.zone.now, merged: false  })
   end
 
   it 'handles start date param' do
@@ -31,6 +63,20 @@ RSpec.describe PullRequestsController, type: :controller do
   it 'handles merged param' do
     get :index, merged: 'true'
     expect(assigns(:prs).length).to eq 1
+    expect(assigns(:prs)).to include merged_lintron_two_weeks_ago
+
+    get :index, merged: 'false'
+    expect(assigns(:prs).length).to eq 3
+    expect(assigns(:prs)).to include unmerged_lintron_one_week_ago
+    expect(assigns(:prs)).to include unmerged_lintron_today
+    expect(assigns(:prs)).to include unmerged_other_today
+
+    get :index, merged: ''
+    expect(assigns(:prs).length).to eq 4
+    expect(assigns(:prs)).to include merged_lintron_two_weeks_ago
+    expect(assigns(:prs)).to include unmerged_lintron_one_week_ago
+    expect(assigns(:prs)).to include unmerged_lintron_today
+    expect(assigns(:prs)).to include unmerged_other_today
   end
 
   it 'handles repo param' do

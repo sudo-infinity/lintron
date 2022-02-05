@@ -2,7 +2,7 @@ class PullRequestsController < ApplicationController
   before_action :authenticate_user_from_token!
 
   def index
-    raise ActionController::RoutingError if current_user.blank?
+    raise ActionController::RoutingError.new('not found') if current_user.blank?
 
     @prs =
       PullRequest
@@ -32,7 +32,8 @@ class PullRequestsController < ApplicationController
 
   def merged_scope
     return :itself unless params.key?(:merged)
-    return :merged if params[:merged] == "true" || params[:merged].nil?
-    :unmerged
+    return :merged if params[:merged].to_s == "true"
+    return :unmerged if params[:merged].to_s == "false"
+    :itself
   end
 end
