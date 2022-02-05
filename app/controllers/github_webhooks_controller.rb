@@ -10,6 +10,7 @@ class GithubWebhooksController < ApplicationController
         begin
           pr = PullRequest.from_payload(payload)
           pr.lint_and_comment!
+          RelintLink.new(pr: pr, request: request).comment!
         rescue => e
           Rails.logger.error e
         end
