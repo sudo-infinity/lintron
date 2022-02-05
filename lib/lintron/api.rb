@@ -43,6 +43,8 @@ module Lintron
   # (2) I can define file_and_line which is used for display and sorting
   class ViolationLine < OpenStruct
     def file_and_line(padTo = 0)
+      return ' ' * padTo unless path && line
+
       file_and_line = "#{path}:#{format '%03i', line}    "
 
       if padTo > file_and_line.length
