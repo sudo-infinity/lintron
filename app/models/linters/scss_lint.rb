@@ -6,7 +6,8 @@ module Linters
       ::SCSSLint::Config::FILE_NAME
     end
 
-    def initialize
+    def initialize(linter_config = nil)
+      @linter_config = linter_config
       add_suit
     end
 
