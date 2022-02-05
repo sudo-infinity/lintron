@@ -57,7 +57,7 @@ module Linters
     @_registered_pr_linters << linter_class
   end
 
-  def pr_level_violations(pr)
+  def self.pr_level_violations(pr)
     @_registered_pr_linters.flat_map { |linter| linter.run(pr) }
   end
 
