@@ -82,3 +82,16 @@ class PRWithDeletion < MockPR
     )
   end
 end
+
+# A mock PR with only files which are exempt by directory-- so we can test
+# that the directory exemption code works.
+class PRWithExemption < MockPR
+  def files
+    Array(
+      StubFile.new(
+        path: 'config/test.rb',
+        blob: '',
+      ),
+    )
+  end
+end

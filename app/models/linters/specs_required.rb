@@ -15,6 +15,13 @@ module Linters
       )
     end
 
+    def self.exempt_patterns
+      [
+        /\Adb/,
+        /\Aconfig/,
+      ]
+    end
+
     def self.config_for_extname(extname)
       config.find do |pattern, _config|
         pattern = Regexp.new("\\A#{pattern}\\Z") unless pattern.class < Regexp
@@ -30,7 +37,7 @@ module Linters
 
     def self.files_needing_specs(pr)
       pr.files
-        .select { |f| requires_spec?(f.extname) }
+        .select { |f| requires_spec?(f) }
         .reject { |f| spec?(f.path) }
     end
 
@@ -43,8 +50,12 @@ module Linters
       "#{base.basename('.*')}_spec" == candidate.basename('.*')
     end
 
-    def self.requires_spec?(extname)
-      config_for_extname(extname).present?
+    def self.requires_spec?(file)
+      config_for_extname(file.extname).present? || exempt_path?(file)
+    end
+
+    def self.exempt_path?(file)
+      exempt_patterns.any? { |pattern| pattern.match(file.path) }
     end
 
     def self.check_for_matching_spec(pr, file)

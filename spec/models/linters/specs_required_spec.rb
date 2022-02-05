@@ -17,6 +17,10 @@ describe Linters::SpecsRequired do
     PRWithDeletion.new
   end
 
+  let(:pr_with_exemption) do
+    PRWithExemption.new
+  end
+
   let(:linter) { Linters::SpecsRequired }
 
   it 'catches missing specs for rb files' do
@@ -42,5 +46,12 @@ describe Linters::SpecsRequired do
       violations = linter.run(pr_with_deletion)
     end.to_not raise_error
     expect(violations).to be_empty
+  end
+
+  it 'ignores exempt directories' do
+    violations = linter.run(pr_with_exemption)
+    expect(violations.length).to eq 0
+
+    expect(linter.exempt_path?(pr_with_exemption.files.first)).to be true
   end
 end
