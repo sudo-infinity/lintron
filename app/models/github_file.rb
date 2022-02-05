@@ -35,4 +35,8 @@ class GithubFile
   def extname
     File.extname(to_gh.filename).gsub(/^\./, '') # without leading .
   end
+
+  def basename(ext = nil)
+    File.basename to_gh.filename, ext
+  end
 end
