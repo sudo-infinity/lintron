@@ -13,6 +13,18 @@ module Linters
     def linter_config
       JSON.parse(config_contents)
     end
+
+    def filter_messages(lints, file)
+      filtered_lints = lints.reject do |lint|
+        case lint.message
+        when 'Line exceeds maximum allowed length'
+          file.blob.lines[lint.line - 1].length < 81
+        else
+          false
+        end
+      end
+      super(filtered_lints, file)
+    end
   end
 end
 
