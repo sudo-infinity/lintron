@@ -77,7 +77,7 @@ class PullRequest < ActiveRecord::Base
 
   def commits
     cache_api_request :commits do
-      Github.pull_requests.commits(@org, @repo, @pr_number)
+      Github.pull_requests.commits(org, repo, pr_number)
     end
   end
 
@@ -108,22 +108,25 @@ class PullRequest < ActiveRecord::Base
   end
 
   def fetch_config_file(filename)
-    url = raw_url_from_path(filename)
-    response = HTTParty.get(url)
-    return nil unless response.success?
-    LinterConfigFile.from_content(response.body)
+    begin
+      response = Github.repos.contents.get(
+        user: org,
+        repo: repo,
+        path: filename,
+        ref: latest_commit.sha
+      )
+      LinterConfigFile.from_content(Base64.decode64(response.content))
+    rescue Github::Error::NotFound
+      nil
+    end
   end
 
   def expected_url_from_path(path)
-    "https://github.com/#{@org}/#{@repo}/blob/#{latest_commit.sha}/#{path}"
-  end
-
-  def raw_url_from_path(path)
-    "https://raw.githubusercontent.com/#{@org}/#{@repo}/#{latest_commit.sha}/#{path}"
+    "https://github.com/#{org}/#{repo}/blob/#{latest_commit.sha}/#{path}"
   end
 
   def key
-    "#{@org}/#{@repo}/#{@pr_number}"
+    "#{org}/#{repo}/#{pr_number}"
   end
 
   def tests?
