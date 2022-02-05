@@ -1,4 +1,6 @@
 class PullRequestsController < ApplicationController
+  before_action :authenticate_user_from_token!
+
   def index
     raise ActionController::RoutingError if current_user.blank?
 
