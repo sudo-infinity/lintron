@@ -13,7 +13,7 @@ $closebutton-color-hover: $black;
 $closebutton-lineheight: $global-lineheight;
 $closebutton-size: $global-font-size;
 
-.rev-Button {
+.rev-Button.rev-Button.rev-Button.rev-Button {
   @include global-transition;
   background: $button-bkgd;
   border: $button-border;
