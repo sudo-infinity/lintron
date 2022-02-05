@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "mkdir build; node node_modules/browserify/bin/cmd.js -d src/index.js > build/linters.js && echo \"Linters built!\""
   },
   "repository": {
     "type": "git",
@@ -19,11 +20,15 @@
   },
   "homepage": "https://github.com/prehnRA/lintron",
   "dependencies": {
+    "browserify": "5.2.1",
     "coffee-react-transform": "^3.1.0",
+    "coffee-script": "^1.9.2",
     "daemon": "^1.1.0",
     "jscs": "^1.13.1",
     "jshint": "^2.7.0",
-    "react-tools": "^0.13.2",
+    "jstransform": "^11.0.1",
+    "react-tools": "0.13.2",
+    "resolve": "^1.1.6",
     "underscore": "^1.8.3"
   }
 }
