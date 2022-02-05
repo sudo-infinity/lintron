@@ -2,7 +2,7 @@ module Linters
   # A linter that detects whether specs are updated when the corresponding
   # application code changes
   class SpecsRequired < Linters::Base
-    def config
+    def self.config
       HashWithIndifferentAccess.new(
         rb: {
           spec_file_ext: 'rb',
@@ -15,44 +15,44 @@ module Linters
       )
     end
 
-    def config_for_extname(extname)
+    def self.config_for_extname(extname)
       config.find do |pattern, _config|
         pattern = Regexp.new("\\A#{pattern}\\Z") unless pattern.class < Regexp
         pattern.match(extname)
-      end[1]
+      end.try(:[], 1)
     end
 
-    def run(pr)
+    def self.run(pr)
       files_needing_specs(pr)
         .flat_map { |f| check_for_matching_spec(pr, f) }
         .compact
     end
 
-    def files_needing_specs(pr)
+    def self.files_needing_specs(pr)
       pr.files
         .select { |f| requires_spec?(f.extname) }
         .reject { |f| spec?(f.path) }
     end
 
-    def spec?(filename)
+    def self.spec?(filename)
       /\A(spec|test)/.match(filename)
     end
 
-    def spec_for?(base, candidate)
+    def self.spec_for?(base, candidate)
       return false unless spec?(candidate.path)
       "#{base.basename('.*')}_spec" == candidate.basename('.*')
     end
 
-    def requires_spec?(extname)
+    def self.requires_spec?(extname)
       config_for_extname(extname).present?
     end
 
-    def check_for_matching_spec(pr, file)
+    def self.check_for_matching_spec(pr, file)
       return if pr.files.any? { |candidate| spec_for?(file, candidate) }
       spec_missing_violation_for(pr, file)
     end
 
-    def spec_missing_violation_for(pr, file)
+    def self.spec_missing_violation_for(pr, file)
       Violation.new(
         file: file,
         line: 1,
@@ -63,7 +63,7 @@ module Linters
       )
     end
 
-    def expected_spec_filename(file)
+    def self.expected_spec_filename(file)
       filename_base = file.basename '.*'
       extname = file.extname
       if %w(es6 jsx js).include?(extname)
@@ -74,13 +74,13 @@ module Linters
       "#{filename_base}_spec.#{file_extname}"
     end
 
-    def expected_spec_path(file)
+    def self.expected_spec_path(file)
       path_pattern = config_for_extname(file.extname)[:app_path_pattern]
       path_match = File.dirname(path_pattern.match(file.path)[:path])
       "spec/#{path_match}/#{expected_spec_filename(file)}"
     end
 
-    def expected_spec_url(pr, file)
+    def self.expected_spec_url(pr, file)
       sha = pr.latest_commit.sha
       "https://github.com/#{pr.org}/#{pr.repo}/blob/#{sha}/#{expected_spec_path(file)}"
     end

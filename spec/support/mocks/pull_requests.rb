@@ -13,6 +13,27 @@ class MockPR
   end
 end
 
+class FixturePR < MockPR
+  def initialize(directory)
+    @directory = directory
+  end
+
+  def fixture_dir
+    Rails.root.join('spec', 'fixtures', 'pull_requests', @directory)
+  end
+
+  def relative_path_of(full_path)
+    Pathname.new(full_path).relative_path_from(fixture_dir).to_s
+  end
+
+  def files
+    filenames = Dir["#{fixture_dir}/**/*"]
+    @files ||= filenames.map do |filename|
+      StubFile.new(path: relative_path_of(filename), blob: File.read(filename))
+    end
+  end
+end
+
 # A mock PR which is missing a required ruby spec
 class PRMissingRBSpec < MockPR
   def files
