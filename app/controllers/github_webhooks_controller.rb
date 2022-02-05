@@ -7,10 +7,14 @@ class GithubWebhooksController < ApplicationController
   def pull_request(payload)
     if LINT_ACTIONS.include? payload['action']
       Thread.new do
-        pr = PullRequest.from_payload(payload)
-        Status.process_with_status(pr) do
-          violations = Linters.violations_for_pr(pr)
-          Commenter.new(pr: pr, violations: violations).comment!
+        begin
+          pr = PullRequest.from_payload(payload)
+          Status.process_with_status(pr) do
+            violations = Linters.violations_for_pr(pr)
+            Commenter.new(pr: pr, violations: violations).comment!
+          end
+        rescue => e
+          Rails.logger.warn e
         end
       end
     end
