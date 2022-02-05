@@ -4,7 +4,7 @@ class Linters::RuboCop < Linters::Base
     runner = RuboCop::Runner.new({}, RuboCop::ConfigStore.new)
     processed_source = processed_source_for(file)
     offenses, _ = runner.send(:inspect_file, processed_source)
-    offenses.map { |o| Violation.new(file: file, line: o.location.line, message: o.message) }
+    offenses.map { |o| Violation.new(file: file, line: o.location.line, message: o.message, linter: Linters::RuboCop) }
   end
 
   def ignored_file?(file)

@@ -77,6 +77,8 @@ module Linters
           Expected changes or additions to a test file called
           [#{expected_spec_filename(file)}](#{expected_spec_url(pr, file)})
         message
+        ,
+        linter: Linters::SpecsRequired,
       )
     end
 

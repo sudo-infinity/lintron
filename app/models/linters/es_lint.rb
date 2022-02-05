@@ -9,10 +9,11 @@ module Linters
 
       lints = JSON.parse(lint_string).first['messages']
       lints.map do |lint|
-        Violation.new(file: file, line: lint['line'], message: lint['message'])
+        Violation.new(file: file, line: lint['line'], message: lint['message'], linter: Linters::ESLint)
       end
     end
   end
 end
 
 Linters.register(:es6, Linters::ESLint)
+Linters.register(:js, Linters::ESLint)
