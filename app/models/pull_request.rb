@@ -1,13 +1,14 @@
-class PullRequest
+class PullRequest < ActiveRecord::Base
   include ApiCache
-  attr_accessor :org, :repo, :pr_number
 
   PR_URL_PATTERN = %r{http(s)?://github.com/(?<org>[^/]+)/(?<repo>[^/]+)/pull/(?<pr_number>[0-9]+)}
 
   def initialize(org:, repo:, pr_number:)
-    @org = org
-    @repo = repo
-    @pr_number = pr_number
+    super(
+      org: org,
+      repo: repo,
+      pr_number: pr_number,
+    )
   end
 
   def self.from_url(url)
@@ -71,6 +72,8 @@ class PullRequest
   def lint_and_comment!
     Status.process_with_status(self) do
       violations = Linters.violations_for_pr(self)
+      self.lints = violations.as_json
+      self.save!
       Commenter.new(pr: self, violations: violations).comment!
     end
   end

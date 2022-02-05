@@ -4,6 +4,10 @@ require_relative '../config/boot'
 require File.expand_path('../../config/environment', __FILE__)
 require 'byebug'
 
+Rails.application.config.logger = Logger.new(STDERR)
+Rails.application.config.logger.level = Logger::ERROR
+Hashie.logger = Rails.application.config.logger
+
 pr_urls = STDIN.read
 pr_urls = pr_urls.split("\n").map(&:strip)
 
@@ -20,11 +24,10 @@ prs.compact!
 
 # TODO: Allow PRs that only delete from tests????
 # TODO: What about migrations?
-# TODO: Disregard closed-but-not-merged
-puts "Org,Repo,URL,Date,Pass,Author"
+puts "Org,Repo,URL,Date,Pass,Author,MergedAt,state"
 prs.each do |pr|
   begin
-    puts "#{pr.org},#{pr.repo},#{pr.to_gh.html_url},#{pr.to_gh.created_at.to_date.strftime('%Y-%m-%d')},#{Linters::SpecsRequired.run(pr).empty? ? 1 : 0},#{pr.to_gh.user.login}"
+    puts "#{pr.org},#{pr.repo},#{pr.to_gh.html_url},#{pr.to_gh.created_at.to_date.strftime('%Y-%m-%d')},#{Linters::SpecsRequired.run(pr).empty? ? 1 : 0},#{pr.to_gh.user.login},#{pr.to_gh.merged_at},#{pr.to_gh.state}"
   rescue Github::Error::NotFound
     puts "Error: #{pr.key}"
   rescue ArgumentError
