@@ -20,6 +20,10 @@ GITHUB_APP_ID=…the developer application's id
 GITHUB_APP_SECRET=…the developer application's secret
 ```
 
+## Linter Configuration
+
+To override linter settings, use the configuration file for the linter. For global settings (across all projects), override the files at the root of the Lintron application. For project specific settings, Lintron will respect configurations placed at the root of your repo.
+
 ## Setting Up Webhooks
 
 Lintron uses webhooks to know when a PR has been created or updated. You'll need to set up the webhook on each repo you want Lintron to monitor.
