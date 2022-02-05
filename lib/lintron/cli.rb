@@ -54,9 +54,7 @@ module Lintron
     end
 
     def pr
-      pr = LocalPrAlike.from_branch(org_name, repo_name, base_branch)
-      pr.linter_configs = relevant_linter_configs(pr.files)
-      pr
+      LocalPrAlike.from_branch(org_name, repo_name, base_branch, repo_path)
     end
 
     def base_branch
@@ -128,26 +126,6 @@ module Lintron
         org: path_parts[-2],
         repo: path_parts[-1],
       }
-    end
-
-    # a hash of file_name => LinterConfigFile
-    # for all linter configs pertaining to this PRs list of changed source files (StubFiles)
-    def relevant_linter_configs(files)
-      extensions = files.map(&:extname).uniq
-      extensions.reduce({}) do |linter_configs, extension|
-        linter_configs.merge(linter_configs_for(extension))
-      end
-    end
-
-    def linter_configs_for(extension)
-      Linters.linter_configs_for(extension).reduce({}) do |linter_configs, config_filename|
-        full_path = File.join(repo_path, config_filename)
-        if File.exist?(full_path)
-          linter_configs.merge(config_filename => LinterConfigFile.from_path(full_path))
-        else
-          linter_configs
-        end
-      end
     end
   end
 end

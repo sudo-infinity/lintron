@@ -22,12 +22,12 @@ class LocalPrAlike
     end
   end
 
-  def self.from_branch(org, repo, base_branch)
+  def self.from_branch(org, repo, base_branch, repo_path)
     LocalPrAlike.new.tap do |pr|
       pr.org = org
       pr.repo = repo
       pr.files = pr.stubs_for_existing(base_branch) + pr.stubs_for_new
-      pr.linter_configs = {}
+      pr.load_linter_configs(repo_path)
     end
   end
 
@@ -79,6 +79,26 @@ class LocalPrAlike
 
   def get_config_file(filename)
     linter_configs[filename]
+  end
+
+  # a hash of file_name => LinterConfigFile
+  # for all linter configs pertaining to this PRs list of changed source files (StubFiles)
+  def load_linter_configs(repo_path)
+    extensions = files.map(&:extname).uniq
+    @linter_configs = extensions.reduce({}) do |linter_configs, extension|
+      linter_configs.merge(linter_configs_for(extension, repo_path))
+    end
+  end
+
+  def linter_configs_for(extension, repo_path)
+    Linters.linter_configs_for(extension).reduce({}) do |linter_configs, config_filename|
+      full_path = File.join(repo_path, config_filename)
+      if File.exist?(full_path)
+        linter_configs.merge(config_filename => LinterConfigFile.from_path(full_path))
+      else
+        linter_configs
+      end
+    end
   end
 
   def linter_configs_content

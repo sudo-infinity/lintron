@@ -4,12 +4,10 @@
 # Can be created from a full filepath or a content blob
 # access #path or #content when using in linters
 class LinterConfigFile
-  attr_reader :path
-
   def initialize(path: nil, content: nil)
+    raise ArgumentError, 'path or content must be provided' unless path || content
     @path = path
     @content = content
-    @path = create_temp_file(@content) if @content && !@path
   end
 
   def self.from_path(file_path)
@@ -20,6 +18,14 @@ class LinterConfigFile
     LinterConfigFile.new(content: content)
   end
 
+  def content
+    @content ||= File.read(@path)
+  end
+
+  def path
+    @path ||= create_temp_file(@content)
+  end
+
   def create_temp_file(content)
     Tempfile.open('linter_config') do |file|
       # keep a reference so the file does not get GC'd until this instance is gone
@@ -27,9 +33,5 @@ class LinterConfigFile
       file.write(content)
       file.path
     end
-  end
-
-  def content
-    @content ||= File.read(@path)
   end
 end
