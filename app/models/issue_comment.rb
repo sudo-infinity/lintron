@@ -1,6 +1,12 @@
 class IssueComment
+  attr_reader :pr, :body
+
   def self.from_line_comment(pr, line_comment)
     new(pr: pr, body: "#{line_comment.path}: #{line_comment.message}")
+  end
+
+  def self.from_gh(pr:, gh:)
+    new(pr: pr, body: gh.body, gh: gh)
   end
 
   # TODO: This pagination logic also happens in commenter.rb, maybe refactor
@@ -18,9 +24,22 @@ class IssueComment
                                 page: page
   end
 
-  def initialize(pr:, body:)
+  def initialize(pr:, body:, gh: nil)
     @pr = pr
     @body = body
+    @gh = gh
+  end
+
+  def message
+    body
+  end
+
+  def ==(other)
+    pr.key == other.pr.key && body == other.body
+  end
+
+  def eql?(other)
+    self == other
   end
 
   def existing_comment
@@ -41,5 +60,9 @@ class IssueComment
   def comment!
     return existing_comment if existing_comment.present?
     Github.issues.comments.create @pr.org, @pr.repo, @pr.pr_number, body: @body
+  end
+
+  def delete!(pr)
+    Github.issues.comments.delete @pr.org, @pr.repo, @gh.id
   end
 end

@@ -78,4 +78,8 @@ class PullRequest
   def expected_url_from_path(path)
     "https://github.com/#{@org}/#{@repo}/blob/#{latest_commit.sha}/#{path}"
   end
+
+  def key
+    "#{@org}/#{@repo}/#{@pr_number}"
+  end
 end

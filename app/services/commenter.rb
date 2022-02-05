@@ -53,7 +53,9 @@ class Commenter
 
   def existing_comments
     cache_api_request :existing_comments do
-      list_from_pr.select { |cmt| lint?(cmt) }.map { |cmt| Comment.from_gh(cmt, @pr) }
+      line_comments = list_from_pr.select { |cmt| lint?(cmt) }.map { |cmt| Comment.from_gh(cmt, @pr) }
+      issue_comments = list_from_issue.select { |cmt| lint?(cmt) }.map { |cmt| IssueComment.from_gh(pr: @pr, gh: cmt) }
+      line_comments + issue_comments
     end
   end
 
@@ -73,5 +75,19 @@ class Commenter
                                        pr.repo,
                                        number: pr.pr_number,
                                        page: page
+  end
+
+  def list_from_issue(page = 1)
+    gh_results = fetch_issue_comments_page(page)
+    results = gh_results.to_a
+    results.concat fetch_issue_comments_page(page + 1) if gh_results.links.next
+    results
+  end
+
+  def fetch_issue_comments_page(page)
+     Github
+      .issues
+      .comments
+      .list(pr.org, pr.repo, number: pr.pr_number, page: page)
   end
 end
