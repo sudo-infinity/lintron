@@ -1,6 +1,5 @@
 class HooksController < ApplicationController
   def index
-    @repos = ProjectRepo.all
   end
 
   def create
