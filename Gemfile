@@ -42,6 +42,10 @@ gem 'brakeman'
 
 gem 'github_api'
 gem 'github_webhook'
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'revelry_auth'
+gem 'devise'
 gem 'execjs'
 gem 'therubyracer'
 
