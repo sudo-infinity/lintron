@@ -51,7 +51,11 @@ module Linters
     end
 
     def self.requires_spec?(file)
-      config_for_extname(file.extname).present? || exempt_path?(file)
+      required_for_extname(file) && !exempt_path?(file)
+    end
+
+    def self.required_for_extname(file)
+      config_for_extname(file.extname).present?
     end
 
     def self.exempt_path?(file)

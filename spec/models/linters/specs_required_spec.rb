@@ -53,5 +53,6 @@ describe Linters::SpecsRequired do
     expect(violations.length).to eq 0
 
     expect(linter.exempt_path?(pr_with_exemption.files.first)).to be true
+    expect(linter.requires_spec?(pr_with_exemption.files.first)).to be false
   end
 end
