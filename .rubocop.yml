@@ -6,3 +6,6 @@ Style/TrailingCommaInArguments:
 
 Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: comma
+  
+Metrics/LineLength:
+  Max: 100
