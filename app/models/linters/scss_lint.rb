@@ -2,7 +2,7 @@ module Linters
   class SCSSLint < Linters::Base
     def run(file)
       engine = ::SCSSLint::Engine.new code: file.blob
-      linters = ::SCSSLint::LinterRegistry.linters.map &:new
+      linters = ::SCSSLint::LinterRegistry.linters.map(&:new)
       lints = linters.flat_map do |linter|
         run_linter(linter, file.path, engine, config)
       end
@@ -29,3 +29,5 @@ module Linters
     end
   end
 end
+
+Linters.register(:scss, Linters::SCSSLint)

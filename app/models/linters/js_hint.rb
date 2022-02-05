@@ -29,3 +29,4 @@ module Linters
 end
 
 Linters.register(:js, Linters::JSHint)
+Linters.register(:jsx, Linters::JSCheckStyle)
