@@ -15,7 +15,7 @@ return "This is some pretty poorly formatted code to be completely honest. We ki
       blob: source,
     )
 
-    lints = Linters::ESLint.run(file)
+    lints = Linters::ESLint.new.run(file)
 
     expect(lints).to_not be_empty
   end
