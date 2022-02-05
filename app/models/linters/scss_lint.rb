@@ -47,7 +47,14 @@ module Linters
     SUIT = {
       'SUIT' => {
         explanation: 'should follow SUIT conventions',
-        validator: ->(name) { name =~ /^(([A-Z]|(u\-[a-z0-9]))[A-Za-z0-9]*)([\-]{,2}[a-z0-9][A-Za-z0-9]*)+$/ }
+        # Tested with:
+        #   rev-PartyTime
+        #   u-utilityName
+        #   ComponentName
+        #   ComponentName--modifierName
+        #   ComponentName-descendentName
+        #   is-stateOfComponent
+        validator: ->(name) { name =~ /^([a-z]+-)?([A-Za-z])+(--?[a-z][A-Za-z]+)?$/ }
       }
     }
 
