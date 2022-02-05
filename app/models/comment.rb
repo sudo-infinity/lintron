@@ -1,10 +1,12 @@
 class Comment
+  include ApiCache
   attr_accessor :position, :path, :message
 
-  def initialize(position:, path:, message:)
+  def initialize(position:, path:, message:, id: nil)
     @position = position
     @path = path
     @message = message
+    @id = id
   end
 
   def self.from_violation(violation)
@@ -13,8 +15,8 @@ class Comment
         message: violation.message
   end
 
-  def self.from_gh(gh)
-    new(position: gh.position, path: gh.path, message: gh.body)
+  def self.from_gh(gh, pr)
+    new(position: gh.position, path: gh.path, message: gh.body, id: gh.id)
   end
 
   def ==(other)
@@ -30,13 +32,24 @@ class Comment
   end
 
   def comment!(pr)
-    Github.pull_requests.comments.create \
+    cmt = cache_api_request :to_gh do
+      Github.pull_requests.comments.create \
+        pr.org,
+        pr.repo,
+        pr.pr_number,
+        body: message,
+        commit_id: pr.to_gh.head.sha,
+        path: path,
+        position: position
+    end
+    @id = cmt.id
+    cmt
+  end
+
+  def delete!(pr)
+    Github.pull_requests.comments.delete \
       pr.org,
       pr.repo,
-      pr.pr_number,
-      body: message,
-      commit_id: pr.to_gh.head.sha,
-      path: path,
-      position: position
+      @id
   end
 end

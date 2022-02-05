@@ -14,6 +14,12 @@ class Commenter
   end
 
   def comment!
+    stale_comments.each do |cmt|
+      under_abuse_limit do
+        cmt.delete! pr
+      end
+    end
+
     new_comments.each do |cmt|
       under_abuse_limit do
         cmt.comment! pr
@@ -25,14 +31,22 @@ class Commenter
     (all_comments - existing_comments).uniq
   end
 
+  def stale_comments
+    existing_comments - all_comments
+  end
+
   def all_comments
     violations.map { |v| Comment.from_violation(v) }
   end
 
   def existing_comments
     cache_api_request :existing_comments do
-      list_from_pr.map { |cmt| Comment.from_gh cmt }
+      list_from_pr.select { |cmt| lint?(cmt) }.map { |cmt| Comment.from_gh(cmt, @pr) }
     end
+  end
+
+  def lint?(cmt)
+    cmt.user.login == ENV['GITHUB_USERNAME']
   end
 
   def list_from_pr(page = 1)
