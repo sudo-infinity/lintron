@@ -7,9 +7,20 @@ module Linters
         f.read
       end
 
-      lints = JSON.parse(lint_string).first['messages']
-      lints.map do |lint|
-        Violation.new(file: file, line: lint['line'], message: lint['message'], linter: Linters::ESLint)
+      begin
+        lints = JSON.parse(lint_string).first['messages']
+        lints.map do |lint|
+          Violation.new(file: file, line: lint['line'], message: lint['message'], linter: Linters::ESLint)
+        end
+      rescue JSON::ParserError
+        [
+          Violation.new(
+            file: file,
+            line: (file.patch.changed_lines.first.number rescue 1),
+            message: 'Unexpected error in ESLint',
+            linter: Linters::ESLint,
+          ),
+        ]
       end
     end
 
@@ -19,6 +30,7 @@ module Linters
         -f json
         --stdin
         --stdin-filename #{file.path}
+        2>&1
       CMD
     end
   end
