@@ -7,6 +7,14 @@ class Violation
     @message = message
   end
 
+  def to_s
+    inspect
+  end
+
+  def to_str
+    inspect
+  end
+
   def inspect
     "#<Violation:#{ (object_id * 2).to_s(16) } @line=#{ line } @file=GithubFile(#{ file.path }) @message='#{ message }'>"
   end

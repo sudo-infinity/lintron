@@ -8,6 +8,14 @@ class PullRequest
     @pr_number = pr_number
   end
 
+  def self.from_payload(payload)
+    repo = payload['pull_request']['head']['repo']
+    repo_name = repo['name']
+    org = repo['owner']['login']
+    pr_number = payload['number']
+    PullRequest.new(org: org, repo: repo_name, pr_number: pr_number)
+  end
+
   def to_gh
     cache_api_request :to_gh do
       Github.pull_requests.get org, repo, pr_number
