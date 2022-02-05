@@ -47,6 +47,8 @@ gem 'therubyracer'
 
 gem 'lograge'
 
+gem 'puma'
+
 group :staging, :production do
   gem 'rails_12factor'
 end
