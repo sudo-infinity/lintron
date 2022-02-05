@@ -96,6 +96,7 @@ class PullRequest < ActiveRecord::Base
     end
   end
 
+  # return a LinterConfigFile if the repo has one matching this filename, or nil
   def get_config_file(filename)
     config_files[filename]
   end
@@ -108,17 +109,15 @@ class PullRequest < ActiveRecord::Base
   end
 
   def fetch_config_file(filename)
-    begin
-      response = Github.repos.contents.get(
-        user: org,
-        repo: repo,
-        path: filename,
-        ref: latest_commit.sha
-      )
-      LinterConfigFile.from_content(Base64.decode64(response.content))
-    rescue Github::Error::NotFound
-      nil
-    end
+    response = Github.repos.contents.get(
+      user: org,
+      repo: repo,
+      path: filename,
+      ref: latest_commit.sha,
+    )
+    LinterConfigFile.from_content(Base64.decode64(response.content))
+  rescue Github::Error::NotFound
+    nil
   end
 
   def expected_url_from_path(path)

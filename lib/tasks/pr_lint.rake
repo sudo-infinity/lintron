@@ -1,5 +1,5 @@
 namespace :pr do
-  task :lint, [:url] => :environment do |task, args|
+  task :lint_and_comment, [:url] => :environment do |task, args|
     if args[:url] && PullRequest::PR_URL_PATTERN =~ args[:url]
       pr = PullRequest.from_url(args[:url])
       pr.lint_and_comment!

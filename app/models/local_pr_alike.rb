@@ -77,6 +77,7 @@ class LocalPrAlike
     path
   end
 
+  # return a LinterConfigFile if the repo has one matching this filename, or nil
   def get_config_file(filename)
     linter_configs[filename]
   end
