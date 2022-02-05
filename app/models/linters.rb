@@ -27,7 +27,7 @@ module Linters
   def self.linters_for(extension)
     @_registered_linters
       .select { |linter_config| linter_config.matches?(extension) }
-      .map { |linter_config| linter_config.linter_class }
+      .map &:linter_class
   end
 
   def self.all_violations(file)
