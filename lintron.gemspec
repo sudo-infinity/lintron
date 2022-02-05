@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.licenses    = ['MIT']
   s.summary     = "A CLI for running lintron against your changes."
   s.description = "A command line tool for using the lintron service against local changes (requires a lintron server)."
-  s.authors     = ["Robert Prehn"]
+  s.authors     = ["Robert Prehn", "Revelry Labs"]
   s.email       = 'robert@revelry.co'
   s.files       = [
     'bin/lintron',

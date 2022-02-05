@@ -43,3 +43,7 @@ You must create a `.linty_rc` file like:
 ```
 
 Then you can run `lintron` or `lintron --watch`
+
+## Copyright
+
+Copyright (c) 2016 Robert Prehn and Revelry Labs
