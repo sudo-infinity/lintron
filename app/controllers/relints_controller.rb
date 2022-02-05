@@ -1,6 +1,6 @@
 class RelintsController < ApplicationController
   def relint
-    pr = PullRequest.new(**pr_params)
+    pr = PullRequest.find_or_initialize_by(**pr_params)
 
     Thread.new do
       pr.lint_and_comment!

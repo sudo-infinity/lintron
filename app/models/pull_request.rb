@@ -25,7 +25,7 @@ class PullRequest < ActiveRecord::Base
 
   def self.from_url(url)
     match_data = PR_URL_PATTERN.match(url)
-    self.new(org: match_data[:org], repo: match_data[:repo], pr_number: match_data[:pr_number].to_i)
+    self.find_or_initialize_by(org: match_data[:org], repo: match_data[:repo], pr_number: match_data[:pr_number].to_i)
   end
 
   def self.from_payload(payload)
@@ -33,7 +33,7 @@ class PullRequest < ActiveRecord::Base
     repo_name = repo['name']
     org = repo['owner']['login']
     pr_number = payload['number']
-    PullRequest.new(org: org, repo: repo_name, pr_number: pr_number)
+    PullRequest.find_or_initialize_by(org: org, repo: repo_name, pr_number: pr_number)
   end
 
   def to_gh
