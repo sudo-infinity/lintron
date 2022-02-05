@@ -35,7 +35,13 @@ class LocalPrAlike
   end
 
   def raw_diff(base_branch)
-    `git diff --no-ext-diff #{base_branch} .`
+    diff = `git diff --no-ext-diff #{base_branch} .`
+    unless $CHILD_STATUS.success?
+      raise(
+        'git diff failed. You may need to set a default branch in .linty_rc.',
+      )
+    end
+    diff
   end
 
   def stubs_for_new
