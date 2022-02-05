@@ -1,22 +1,62 @@
-<table>
-  <thead>
-    <tr>
-      <th>
-        PR
-      </th>
-      <th>
-        Tests?
-      </th>
-    </tr>
-  </thead>
-  <% @prs.each do|pr| %>
-    <tr>
-      <td>
-        <%= link_to pr.github_cache.html_url, pr.github_cache.html_url, target: '_blank' %>
-      </td>
-      <td>
-        <%= pr.tests? ? 1 : 0 %>
-      </td>
-    </tr>
-  <% end %>
-</table>
+<div class="row">
+  <div class="column small-12">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            Org
+          </th>
+          <th>
+            Repo
+          </th>
+          <th>
+            Number
+          </th>
+          <th>
+            PR
+          </th>
+          <th>
+            Tests?
+          </th>
+          <th>
+            Created
+          </th>
+          <th>
+            Author
+          </th>
+          <th>
+            Merged
+          </th>
+        </tr>
+      </thead>
+      <% @prs.each do|pr| %>
+        <tr class="TableRow">
+          <th>
+            <%= pr.org %>
+          </th>
+          <th>
+            <%= pr.repo %>
+          </th>
+          <th>
+            <%= pr.pr_number %>
+          </th>
+          <td>
+            <%= link_to pr.github_cache.html_url, pr.github_cache.html_url, target: '_blank' %>
+          </td>
+          <td>
+            <%= pr.tests? ? 1 : 0 %>
+          </td>
+          <td>
+            <%= pr.github_cache['created_at'] %>
+          </td>
+          <td>
+            <%= pr.github_cache['user']['login'] %>
+          </td>
+          <td>
+            <%= pr.github_cache['merged'] %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

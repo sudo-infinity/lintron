@@ -1,0 +1,11 @@
+table {
+  color: $sub_white;
+}
+
+.TableRow.TableRow {
+  background: $background_color;
+}
+
+.TableRow.TableRow:nth-child(2n+1) {
+  background: $background_paper;
+}
