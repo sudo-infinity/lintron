@@ -8,6 +8,8 @@ module Linters
         message: <<-message.squish
           #{file.path}: Skipping this file because it is too long.
         message
+        ,
+        linter: Linters::FileTooLong,
       )
     end
   end

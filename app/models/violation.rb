@@ -1,10 +1,11 @@
 class Violation
-  attr_accessor :file, :line, :message
+  attr_accessor :file, :line, :message, :linter
 
-  def initialize(file:, line:, message:)
+  def initialize(file:, line:, message:, linter: nil)
     @file = file
     @line = line
     @message = message
+    @linter = linter
   end
 
   def position

@@ -41,7 +41,7 @@ module Linters
       end
 
       lints.map do |lint|
-        Violation.new file: file, line: lint['line'], message: lint['message']
+        Violation.new file: file, line: lint['line'], message: lint['message'], linter: self.class
       end
     end
 

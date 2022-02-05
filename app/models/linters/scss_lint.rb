@@ -28,7 +28,8 @@ module Linters
       Violation.new(
         file: file,
         line: lint.location.line,
-        message: lint.description
+        message: lint.description,
+        linter: Linters::SCSSList,
       )
     end
 
