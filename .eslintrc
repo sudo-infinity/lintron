@@ -72,7 +72,7 @@
     "dot-location": [2, "property"],
     "eqeqeq": [2, "smart"],
     "guard-for-in": 2,
-    "no-alert": 2,
+    "no-alert": 0,
     "no-caller": 2,
     "no-div-regex": 2,
     "no-else-return": 0,
