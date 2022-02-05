@@ -38,6 +38,7 @@ gem 'dotenv'
 gem 'ruby-lint'
 gem 'scss-lint'
 gem 'rubocop'
+gem 'brakeman'
 
 gem 'github_api'
 gem 'github_webhook'
