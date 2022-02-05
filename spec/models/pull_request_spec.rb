@@ -33,6 +33,13 @@ describe PullRequest do
       end.not_to raise_error
     end
 
+    it 'does not try to fetch nil config file from github' do
+      expect(Github.repos.contents).to_not receive(:get)
+      expect do
+        expect(pr.get_config_file(nil)).to be(nil)
+      end.not_to raise_error
+    end
+
     it 'only fetches once for repeated access to a config file' do
       allow(pr).to receive(:fetch_config_file).once.and_return(linter_config_file)
       expect(pr.get_config_file('.eslintrc')).to be(linter_config_file)
