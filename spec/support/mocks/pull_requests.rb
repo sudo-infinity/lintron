@@ -20,7 +20,7 @@ class MockPR
     OpenStruct.new sha: 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
   end
 
-  def get_config_file(filename)
+  def get_config_file(_filename)
     nil
   end
 end
