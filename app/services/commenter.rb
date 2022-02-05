@@ -22,7 +22,7 @@ class Commenter
   end
 
   def new_comments
-    all_comments - existing_comments
+    (all_comments - existing_comments).uniq
   end
 
   def all_comments
@@ -35,7 +35,16 @@ class Commenter
     end
   end
 
-  def list_from_pr
-    Github.pull_requests.comments.list(pr.org, pr.repo, pr.pr_number)
+  def list_from_pr(page = 1)
+    results = fetch_comment_page(page)
+    results.concat list_from_pr(page + 1) if results.links.next
+    results
+  end
+
+  def fetch_comment_page(page)
+    Github.pull_requests.comments.list pr.org,
+                                       pr.repo,
+                                       number: pr.pr_number,
+                                       page: page
   end
 end
