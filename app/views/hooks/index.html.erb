@@ -1,14 +1,29 @@
-<h1>Attach hooks</h1>
+<div class="hero-splash">
+  <div class="super-logo">
+    <img class="" src="images/lintron_icon_grid.svg" />
+    <div class="powered-by-revelry">
+      <img src="images/powered_rev.png" />
+    </div>
+  </div>
+  <h2 class='center-text uppercase italic'>Legenderay Auto Lint Comment Generator</h2>
 
-<%= form_tag :hooks do %>
-  <label>
-    Org
-    <input name="org" value="revelrylabs" />
-  </label>
-  <label>
-    Repo
-    <input name="repo" />
-  </label>
+  <div class="hooks-display paper">
+    <div class="main-container">
+      <div class="breathe">
+        <%= form_tag :hooks do %>
+            <h3 class='uppercase color-text'>Attach hooks</h1>
+            <div class="three-column">
+                <input class='hooks-form curved animate' name="org" placeholder="Organization" value="revelrylabs" />
+            </div>
+            <div class="three-column">
+                <input class='hooks-form curved animate' name="repo" placeholder="Repo" />
+            </div>
+            <div class="three-column">
+                <button class='hooks-button curved animate'>Hook 'em</button>
+            </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
-  <button>Hook 'em</button>
-<% end %>
+</div>

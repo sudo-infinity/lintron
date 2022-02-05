@@ -1,0 +1,316 @@
+@import 'globals';
+.black-paper{
+  background: $light_black;
+}
+.black-paper-bg{
+  background: $black;
+}
+.background{
+  background: $background_color;
+}
+.background-paper{
+  background: $background_paper;
+}
+.paper{
+  background: $white;
+}
+.paper-bg{
+  background: $sub_white;
+}
+.accent-paper{
+
+}
+.main-paper{
+
+}
+$valid:#99d600;
+$error:#d82f77;
+$alert:#ffda00;
+$blocked:#ccc;
+$accent:#41a4f4;
+// deep ends
+
+img{
+    image-rendering: optimizeSpeed;             /*  GIVE ME SPEED  */
+    image-rendering: -moz-crisp-edges;          /* Firefox                        */
+    image-rendering: -o-crisp-edges;            /* Opera                          */
+    image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+    image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+
+  //    transform: translate3d(0,0,0);
+  //-moz-transform: translate3d(0,0,0);
+  //-webkit-transform: translate3d(0,0,0);
+
+  -webkit-backface-visibility: hidden;
+  //-webkit-transform: translateZ(0);
+//transform: translateZ(0);
+}
+.imageAGPU{
+    transform: translate3d(0,0,0);
+  -moz-transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0,0,0);
+
+}
+div{
+  //  image-rendering: optimizeSpeed;             /*  GIVE ME SPEED  */
+  //  image-rendering: -moz-crisp-edges;          /* Firefox                        */
+  //  image-rendering: -o-crisp-edges;            /* Opera                          */
+  //  image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+  //  image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+  //  -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+   //  -webkit-backface-visibility: hidden;
+}
+select{
+    outline: 0px;
+    border: 0px;
+}
+.placeholder{
+  color:$black;
+  font-size: 24px;;
+}
+.search{
+  .is-event-view .event-data :-ms-input-placeholder {
+
+  color:$black;
+  font-size: 18px;
+}
+::-webkit-input-placeholder {
+  color:$black;
+  font-size: 18px;
+}
+
+:-moz-placeholder {
+ color:$black;
+ font-size: 18px;
+}
+
+::-moz-placeholder {
+  color:$black;
+  font-size: 18px;
+}
+
+:-ms-input-placeholder {
+  color:$black;
+  font-size: 18px;
+}
+}
+
+
+input, textarea{
+  border:0px;
+  background:transparent;
+}
+input:focus {
+  outline: 0;
+  border-color: $primary_color_accent;
+}
+textarea:focus{
+  outline:0;
+  border-color: $primary_color_accent;
+}
+a{
+  text-decoration: none;
+  cursor:pointer;
+  color:$black;
+}
+html{
+  -webkit-backface-visibility: hidden;
+  overflow-x: hidden;
+}
+body{
+  -webkit-backface-visibility: hidden;
+  margin:0px;
+  //background:rgb(247,247,247);
+  margin:0;
+  overflow-x: hidden;
+
+}
+.overflow-auto{
+  overflow:auto;
+}
+.overflow-hidden{
+  overflow:hidden;
+}
+.screen {
+    font-size: 0.5em;
+    margin: 0;
+    background-color: red;
+    position: absolute;
+    width: 100% ;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.screen .main {
+    width: 100%;
+    height: 100%;
+}
+.sphere{
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  overflow:hidden;
+}
+.pointer{
+  cursor:pointer;
+}
+.animate{
+  -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  -o-transition: all .3s ease-in-out;
+  -ms-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+}
+.blur{
+  -webkit-filter: blur(10px);
+  -moz-filter: blur(10px);
+  -o-filter: blur(10px);
+  -ms-filter: blur(10px);
+}
+.curved{
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  overflow:hidden;
+}
+.cover{
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+ul{
+  list-style: none;
+  padding: 0px;
+  margin:0px;
+}
+.hidden{
+  display:none;
+}
+.center{
+  left:50%;
+  position:relative;
+}
+
+.shadow{
+-webkit-box-shadow: 0px 1px 4px 0px rgba(20, 20, 20, 0.15);
+-moz-box-shadow:    0px 1px 4px 0px rgba(20, 20, 20, 0.15);
+box-shadow:         0px 1px 4px 0px rgba(20, 20, 20, 0.15);
+}
+.text-shadow{
+  text-shadow:0px 0px 20px rgba(0,0,0,0.1);
+}
+.transparent{
+    filter: alpha(opacity=0);
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+
+.opaque{
+    filter: alpha(opacity=100);
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+.capitals{
+  text-transform: capitalize;
+}
+.uppercase{
+  text-transform: uppercase;
+}
+.glass{
+  background-color: rgba(250,250,250, 0.2);
+}
+.polarized-glass{
+  background-color: rgba(0,0,0, 0.3);
+}
+.breathe{
+  padding:10px;
+}
+.sub-breathe{
+  margin-left: 5px;
+  padding:5px;
+}
+.valid{
+    border-color:#99d600;
+
+}
+ .alert{
+    border-color:#ffda00;
+    background:#f9f3d4;
+}
+.input-error{
+  border-color:#ed1580;
+}
+.error{
+    border-color:#ed1580;
+    background:#f7c6d2;
+}
+.left{
+  float:left;
+}
+.right{
+  float:right;
+}
+.fixed{
+  position: fixed;
+}
+.center-text{
+  text-align: center;
+}
+.justify-text{
+  text-align: justify;
+}
+.right-text{
+  text-align: right;
+}
+.left-text{
+  text-align: left;
+}
+.italic{
+  font-style: italic;
+}
+.scroll-cap{
+   pointer-events: none;
+}
+.scrim{
+background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,0.60) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.60))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.60) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.60) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.60) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.60) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
+
+}
+.divider{
+  position:relative;
+  width:100%;
+  height:0px;
+  border-bottom: solid 1px $sub_white;
+}
+.elipsise{
+  text-overflow: ellipsis;
+}
+.clip-mask-50{
+  width:50px;
+  height:50px;
+  top:5px;
+  left:5px;
+  position:relative;
+  overflow:hidden;
+}
+.white-text{
+  color:$white;
+}
+.color-accent-text{
+  color:$primary_color_accent;
+}
+.color-text{
+  color:$primary_color;
+}
+.breathe{
+  padding: 50px;
+  overflow: auto;
+}
