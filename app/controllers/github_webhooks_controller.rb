@@ -14,7 +14,7 @@ class GithubWebhooksController < ApplicationController
             Commenter.new(pr: pr, violations: violations).comment!
           end
         rescue => e
-          Rails.logger.warn e
+          Rails.logger.error e
         end
       end
     end
