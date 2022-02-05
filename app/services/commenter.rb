@@ -2,13 +2,23 @@ class Commenter
   include ApiCache
   attr_accessor :pr, :violations
 
+  delegate :under_abuse_limit, to: :abuse_throttle
+
   def initialize(pr:, violations:)
     @pr = pr
     @violations = violations
   end
 
+  def abuse_throttle
+    @_abuse_throttle ||= AbuseThrottle.new
+  end
+
   def comment!
-    new_comments.each { |cmt| cmt.comment! pr }
+    new_comments.each do |cmt|
+      under_abuse_limit do
+        cmt.comment! pr
+      end
+    end
   end
 
   def new_comments
